@@ -8,19 +8,11 @@
   <packaging>pom</packaging>
   <name>TeamCity Advanced Installer Plugin Parent</name>
 
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
-
   <properties>
     <teamcity-version>8.1.4</teamcity-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <plugin.version>${project.version}</plugin.version>
   </properties>
-
 
   <repositories>
     <repository>
@@ -28,6 +20,28 @@
       <url>http://repository.jetbrains.com/all</url>
     </repository>
   </repositories>
+
+  <developers>
+    <developer>
+      <id>advinst</id>
+      <name>Advanced Installer</name>
+      <email>support@advancedinstaller.com</email>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>MIT license</name>
+      <comments>All source code is under the MIT license.</comments>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/advinst/advinst-jenkins-plugin</url>
+    <connection>scm:git:https://github.com/advinst/advinst-jenkins-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:https://github.com/advinst/advinst-jenkins-plugin.git</developerConnection>
+  </scm>
 
   <build>
     <pluginManagement>
