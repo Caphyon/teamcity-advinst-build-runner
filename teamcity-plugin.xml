@@ -2,7 +2,7 @@
 <teamcity-plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:shemas-jetbrains-com:teamcity-plugin-v1-xml">
   <info>
 
-    <name>advancedinstaller</name>
+    <name>AdvancedInstaller</name>
     <display-name>Advanced Installer</display-name>
     <version>${plugin.version}</version>
     <description>Build setup packages using Advanced Installer</description>
@@ -11,7 +11,7 @@
 
     <vendor>
       <name>Caphyon</name>
-      <url>www.advancedinstaller.com</url>
+      <url>http://www.advancedinstaller.com</url>
     </vendor>
   </info>
   <deployment use-separate-classloader="true" />

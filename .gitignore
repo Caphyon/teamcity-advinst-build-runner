@@ -42,6 +42,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 target/
-build/target/
+advinst-build/target/
 advinst-agent/target/
 advinst-server/target/
