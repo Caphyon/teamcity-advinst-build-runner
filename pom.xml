@@ -40,7 +40,7 @@
   <scm>
     <url>https://github.com/advinst/advinst-jenkins-plugin</url>
     <connection>scm:git:https://github.com/advinst/advinst-jenkins-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:https://github.com/advinst/advinst-jenkins-plugin.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/advinst/advinst-jenkins-plugin.git</developerConnection>
   </scm>
 
   <build>
