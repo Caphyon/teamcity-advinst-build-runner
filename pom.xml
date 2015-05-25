@@ -38,10 +38,19 @@
   </licenses>
 
   <scm>
-    <url>https://github.com/advinst/advinst-jenkins-plugin</url>
-    <connection>scm:git:https://github.com/advinst/advinst-jenkins-plugin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/advinst/advinst-jenkins-plugin.git</developerConnection>
+    <url>https://github.com/advinst/teamcity-advinst-build-runner</url>
+    <connection>scm:git:https://github.com/advinst/teamcity-advinst-build-runner.git</connection>
+    <developerConnection>scm:git:https://github.com/advinst/teamcity-advinst-build-runner.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
 
   <build>
     <pluginManagement>
@@ -54,6 +63,28 @@
             <target>1.5</target>
           </configuration>
         </plugin>
+
+        <plugin>
+          <groupId>de.jutzig</groupId>
+          <artifactId>github-release-plugin</artifactId>
+          <version>1.1.1</version>
+          <executions>
+            <execution>
+              <id>github-upload</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>release</goal>
+              </goals>
+              <inherited>false</inherited>
+              <configuration>
+                <releaseName>Release ${project.version}</releaseName>
+                <tag>Release ${project.version}</tag>
+                <artifact>${project.build.directory}/advancedinstaller-${project.version}.zip</artifact>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
       </plugins>
     </pluginManagement>
   </build>
