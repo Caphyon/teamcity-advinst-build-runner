@@ -41,7 +41,6 @@
     <url>https://github.com/advinst/teamcity-advinst-build-runner</url>
     <connection>scm:git:https://github.com/advinst/teamcity-advinst-build-runner.git</connection>
     <developerConnection>scm:git:https://github.com/advinst/teamcity-advinst-build-runner.git</developerConnection>
-    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
@@ -64,29 +63,30 @@
           </configuration>
         </plugin>
 
-        <plugin>
-          <groupId>de.jutzig</groupId>
-          <artifactId>github-release-plugin</artifactId>
-          <version>1.1.1</version>
-          <executions>
-            <execution>
-              <id>github-upload</id>
-              <phase>deploy</phase>
-              <goals>
-                <goal>release</goal>
-              </goals>
-              <inherited>false</inherited>
-              <configuration>
-                <releaseName>Release ${project.version}</releaseName>
-                <tag>Release ${project.version}</tag>
-                <artifact>${project.build.directory}/${project.artifactId}-${project.version}.zip</artifact>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>de.jutzig</groupId>
+        <artifactId>github-release-plugin</artifactId>
+        <version>1.1.0</version>
+        <executions>
+          <execution>
+            <id>github-upload</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>release</goal>
+            </goals>
+            <inherited>false</inherited>
+            <configuration>
+              <releaseName>Release ${project.version}</releaseName>
+              <tag>${release.tag}</tag>
+              <artifact>${project.build.directory}/${project.artifactId}-${project.version}.zip</artifact>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <modules>
