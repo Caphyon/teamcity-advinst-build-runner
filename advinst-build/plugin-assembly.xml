@@ -19,8 +19,8 @@
     <moduleSet>
        <useAllReactorProjects>true</useAllReactorProjects>
        <includes>
-           <include>teamcity-advinst-build-runner:advinst-server</include>
-           <include>teamcity-advinst-build-runner:advinst-common</include>
+           <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-server</include>
+           <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-common</include>
        </includes>
        <binaries>
            <outputDirectory>server</outputDirectory>

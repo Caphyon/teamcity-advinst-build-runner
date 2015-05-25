@@ -15,8 +15,8 @@
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>teamcity-advinst-build-runner:advinst-agent</include>
-                <include>teamcity-advinst-build-runner:advinst-common</include>
+                <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-agent</include>
+                <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-common</include>
             </includes>
             <binaries>
                 <outputDirectory>lib</outputDirectory>

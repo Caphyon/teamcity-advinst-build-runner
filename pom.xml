@@ -79,7 +79,7 @@
               <configuration>
                 <releaseName>Release ${project.version}</releaseName>
                 <tag>Release ${project.version}</tag>
-                <artifact>${project.build.directory}/advancedinstaller-${project.version}.zip</artifact>
+                <artifact>${project.build.directory}/${project.artifactId}-${project.version}.zip</artifact>
               </configuration>
             </execution>
           </executions>
