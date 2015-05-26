@@ -41,6 +41,7 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.versionsBackup
 target/
 advinst-build/target/
 advinst-agent/target/
