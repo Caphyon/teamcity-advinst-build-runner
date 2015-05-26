@@ -6,7 +6,7 @@
     <display-name>Advanced Installer</display-name>
     <version>${plugin.version}</version>
     <description>Build setup packages using Advanced Installer</description>
-    <download-url></download-url>
+    <download-url>http://advancedinstaller.com/teamcity-plugin.html</download-url>
     <email>support@advancedinstaller.com</email>
 
     <vendor>

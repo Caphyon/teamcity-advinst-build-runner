@@ -12,6 +12,8 @@
     <teamcity-version>8.1.4</teamcity-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <plugin.version>${project.version}</plugin.version>
+    <release.version>${project.version}</release.version>
+    <release.tag>v${project.version}</release.tag>
   </properties>
 
   <repositories>
@@ -52,6 +54,7 @@
   </distributionManagement>
 
   <build>
+
     <pluginManagement>
       <plugins>
         <plugin>
@@ -62,14 +65,33 @@
             <target>1.5</target>
           </configuration>
         </plugin>
-
       </plugins>
     </pluginManagement>
+
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.4.2</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-gitexe</artifactId>
+            <version>1.8.1</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <tag>${release.tag}</tag>
+          <releaseVersion>${release.version}</releaseVersion>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>de.jutzig</groupId>
         <artifactId>github-release-plugin</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
         <executions>
           <execution>
             <id>github-upload</id>
@@ -79,14 +101,16 @@
             </goals>
             <inherited>false</inherited>
             <configuration>
-              <releaseName>Release ${project.version}</releaseName>
+              <releaseName>Release ${release.version}</releaseName>
               <tag>${release.tag}</tag>
-              <artifact>${project.build.directory}/${project.artifactId}-${project.version}.zip</artifact>
+              <artifact>${project.build.directory}/${project.artifactId}-${release.version}.zip</artifact>
             </configuration>
           </execution>
         </executions>
       </plugin>
+      
     </plugins>
+
   </build>
 
   <modules>
