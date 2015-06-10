@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>caphyon.advinst.teamcity</groupId>
   <artifactId>advinst-teamcity-plugin</artifactId>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>TeamCity Advanced Installer Plugin</name>
 
@@ -14,7 +14,7 @@
     <plugin.version>${project.version}</plugin.version>
     <release.version>${project.version}</release.version>
     <release.tag>v${project.version}</release.tag>
-    <release.notes>Initial release.</release.notes>
+    <release.notes>Please see the CHANGELOG.md file for list of changes.</release.notes>
   </properties>
 
   <repositories>
