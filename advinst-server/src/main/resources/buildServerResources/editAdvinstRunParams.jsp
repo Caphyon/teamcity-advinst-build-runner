@@ -57,6 +57,20 @@
   </tr>
 
   <tr class="advancedSetting">
+    <th><label for="${constants.aipExtraCommands}">Commands: </label></th>
+    <td>
+      <props:multilineProperty name="${constants.aipExtraCommands}"
+                               className="longField"
+                               linkTitle="Type commands"
+                               cols="55" rows="5"
+                               expanded="true"/>
+      <span class="error" id="error_${constants.aipExtraCommands}"></span>
+      <span class="smallNote">Advanced Installer edit commands that will be executed against the specified aip file.<br/>
+         Example: SetVersion 1.2.3</span>
+    </td>
+  </tr>
+
+  <tr class="advancedSetting">
     <th><label for="${constants.aipDoNotSign}">Do not digitally sign package</label></th>
     <td>
       <props:checkboxProperty name="${constants.aipDoNotSign}"/>

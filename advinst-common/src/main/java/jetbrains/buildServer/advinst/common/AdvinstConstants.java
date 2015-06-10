@@ -14,6 +14,7 @@ public interface AdvinstConstants
   String SETTINGS_ADVINST_AIP_SETUP_FILE = "advancedinstaller.aip.setup.file";
   String SETTINGS_ADVINST_AIP_SETUP_FOLDER = "advancedinstaller.aip.setup.folder";
   String SETTINGS_ADVINST_AIP_DONOTSIGN = "advancedinstaller.aip.donotsign";
+  String SETTINGS_ADVINST_AIP_EXTRA_COMMANDS = "advancedinstaller.aip.extra.commands";
 
   String RUNNER_DISPLAY_NAME = "Advanced Installer";
   String RUNNER_DESCRIPTION = "Build setup packages.";

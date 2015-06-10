@@ -28,3 +28,7 @@
   Do not digitally sign package: <strong><props:displayCheckboxValue name="${constants.aipDoNotSign}"/></strong>
 </div>
 
+<div class="parameter">
+  Commands: <strong><props:displayValue name="${constants.aipExtraCommands}"/></strong>
+</div>
+

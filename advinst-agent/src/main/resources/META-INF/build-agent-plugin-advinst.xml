@@ -4,4 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-autowire="constructor">
   <bean name="AdvinstRunner" class="jetbrains.buildServer.advinst.agent.AdvinstBuildServiceFactory" />
+  <bean name="AdvinstAgentListener" class="jetbrains.buildServer.advinst.agent.AdvinstAgentListener" />
 </beans>
+

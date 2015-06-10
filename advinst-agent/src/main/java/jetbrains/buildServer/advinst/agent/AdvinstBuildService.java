@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.intellij.util.xmlb.annotations.Collection;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.advinst.common.AdvinstAipReader;
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
@@ -21,6 +23,7 @@ import jetbrains.buildServer.agent.runner.BuildServiceAdapter;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.util.FileUtil;
 import jetbrains.buildServer.util.StringUtil;
+import jetbrains.buildServer.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class AdvinstBuildService extends BuildServiceAdapter
@@ -144,6 +147,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
     String buildName;
     String packageName;
     String packageFolder;
+    String extraCommands;
     boolean resetSig = false;
     //------------------------------------------------------------------------
     // Compute and validate AIP project path. It can be either an absolute path
@@ -193,6 +197,10 @@ public class AdvinstBuildService extends BuildServiceAdapter
     //compute and validate the output package name
     {
       packageName = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE);
+      if (StringUtil.isNotEmpty(packageName) && StringUtil.isNotEmpty(buildName))
+      {
+        throw new RunBuildException("Using a package output name requires a build to be specified");
+      }
     }
 
     //------------------------------------------------------------------------
@@ -200,7 +208,12 @@ public class AdvinstBuildService extends BuildServiceAdapter
     // or relative to the build workspace folder.
     {
       packageFolder = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FOLDER);
-      if (StringUtil.isNotEmpty(buildName))
+      if ( StringUtil.isNotEmpty(packageFolder) && StringUtil.isEmpty(buildName))
+      {
+        throw new RunBuildException("Using a package output folder requires a build to be specified");
+      }
+
+      if ( StringUtil.isNotEmpty(packageFolder) )
       {
         File dir = new File(packageFolder);
         if (!dir.isAbsolute())
@@ -208,12 +221,15 @@ public class AdvinstBuildService extends BuildServiceAdapter
           packageFolder = new File(getCheckoutDirectory(), dir.getPath()).getAbsolutePath();
         }
       }
-
     }
 
     {
       resetSig = getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN)
               && getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN).equals(Boolean.TRUE.toString());
+    }
+
+    {
+      extraCommands = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_EXTRA_COMMANDS);
     }
 
     if (StringUtil.isNotEmpty(packageName))
@@ -231,6 +247,15 @@ public class AdvinstBuildService extends BuildServiceAdapter
       commands.add("ResetSig");
     }
 
+    if (StringUtil.isNotEmpty(extraCommands))
+    {
+      Iterable<String> tokens = StringUtil.tokenize(extraCommands, "\r\n");
+      for (String token : tokens)
+      {
+        commands.add(token);
+      }
+    }
+
     commands.add(String.format(StringUtil.isEmpty(buildName) ? "Build" : "Build -buildslist \"%s\"", buildName));
 
     File commandsFile;
@@ -242,7 +267,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
     }
     catch (IOException ex)
     {
-      throw RunBuildException.create(null, ex.getMessage());
+      throw new RunBuildException(ex.getMessage());
     }
 
     return arguments;
@@ -251,7 +276,6 @@ public class AdvinstBuildService extends BuildServiceAdapter
   @NotNull
   private static File createAicFile(final List<String> aCommands) throws IOException
   {
-
     File aicFile = File.createTempFile("aic", null);
     FileOutputStream outStream = new FileOutputStream(aicFile);
     OutputStreamWriter writer = null;

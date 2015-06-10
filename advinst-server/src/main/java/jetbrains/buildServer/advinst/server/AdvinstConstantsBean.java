@@ -42,4 +42,10 @@ public class AdvinstConstantsBean
     return AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN;
   }
 
+  @NotNull
+  public String getAipExtraCommands()
+  {
+    return AdvinstConstants.SETTINGS_ADVINST_AIP_EXTRA_COMMANDS;
+  }
+
 }
