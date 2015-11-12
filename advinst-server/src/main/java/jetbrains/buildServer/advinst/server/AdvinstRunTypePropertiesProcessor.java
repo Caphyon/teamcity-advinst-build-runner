@@ -21,7 +21,7 @@ public class AdvinstRunTypePropertiesProcessor implements PropertiesProcessor
     List<InvalidProperty> result = new ArrayList<InvalidProperty>();
 
     final Path advinstRoot = Paths.get(properties.get(AdvinstConstants.SETTINGS_ADVINST_ROOT));
-    if (PropertiesUtil.isEmptyOrNull(advinstRoot.toString()) || Files.notExists(advinstRoot))
+    if (PropertiesUtil.isEmptyOrNull(advinstRoot.toString()))
     {
       result.add(new InvalidProperty(AdvinstConstants.SETTINGS_ADVINST_ROOT,
               "Advanced Installer installation root must be specified."));
