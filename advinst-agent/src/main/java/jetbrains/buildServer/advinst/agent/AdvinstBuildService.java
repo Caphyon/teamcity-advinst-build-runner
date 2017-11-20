@@ -154,6 +154,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
     // or relative to the checkout folder.
     {
       absoluteAipPath = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_PATH);
+      getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_PATH + "=" + absoluteAipPath);
       if (StringUtil.isEmpty(absoluteAipPath))
       {
         throw new RunBuildException("Advanced Installer project path (.AIP) was not specified in build settings");
@@ -176,6 +177,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
     // compute and validate build name.
     {
       buildName = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_BUILD);
+      getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_BUILD + "=" + buildName);
       if (StringUtil.isNotEmpty(buildName))
       {
         AdvinstAipReader aipReader = new AdvinstAipReader(absoluteAipPath);
@@ -197,7 +199,8 @@ public class AdvinstBuildService extends BuildServiceAdapter
     //compute and validate the output package name
     {
       packageName = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE);
-      if (StringUtil.isNotEmpty(packageName) && StringUtil.isNotEmpty(buildName))
+      getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE + "=" + packageName);
+      if (StringUtil.isNotEmpty(packageName) && StringUtil.isEmpty(buildName))
       {
         throw new RunBuildException("Using a package output name requires a build to be specified");
       }
@@ -208,6 +211,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
     // or relative to the build workspace folder.
     {
       packageFolder = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FOLDER);
+      getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FOLDER + "=" + packageFolder);
       if ( StringUtil.isNotEmpty(packageFolder) && StringUtil.isEmpty(buildName))
       {
         throw new RunBuildException("Using a package output folder requires a build to be specified");
@@ -230,6 +234,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
 
     {
       extraCommands = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_EXTRA_COMMANDS);
+      getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_EXTRA_COMMANDS + "=" + extraCommands);
     }
 
     if (StringUtil.isNotEmpty(packageName))
