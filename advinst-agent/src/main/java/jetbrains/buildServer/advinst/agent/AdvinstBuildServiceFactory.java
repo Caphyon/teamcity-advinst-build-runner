@@ -10,8 +10,7 @@ import jetbrains.buildServer.agent.runner.CommandLineBuildServiceFactory;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-public class AdvinstBuildServiceFactory implements CommandLineBuildServiceFactory, AgentBuildRunnerInfo
-{
+public class AdvinstBuildServiceFactory implements CommandLineBuildServiceFactory, AgentBuildRunnerInfo {
 
   private static final Logger LOG = Logger.getLogger(AdvinstBuildServiceFactory.class);
 
@@ -19,22 +18,18 @@ public class AdvinstBuildServiceFactory implements CommandLineBuildServiceFactor
   private final InspectionReporter mInspectionsReporter;
 
   public AdvinstBuildServiceFactory(@NotNull final ArtifactsWatcher artifactsWatcher,
-          @NotNull final InspectionReporter inspectionsReporter)
-  {
+                                    @NotNull final InspectionReporter inspectionsReporter) {
     mArtifactsWatcher = artifactsWatcher;
     mInspectionsReporter = inspectionsReporter;
   }
 
   @NotNull
-  public String getType()
-  {
+  public String getType() {
     return AdvinstConstants.RUNNER_TYPE;
   }
 
-  public boolean canRun(@NotNull final BuildAgentConfiguration agentConfiguration)
-  {
-    if (!agentConfiguration.getSystemInfo().isWindows())
-    {
+  public boolean canRun(@NotNull final BuildAgentConfiguration agentConfiguration) {
+    if (!agentConfiguration.getSystemInfo().isWindows()) {
       LOG.debug(getType() + " runner is supported only under Windows platform");
       return false;
     }
@@ -42,14 +37,12 @@ public class AdvinstBuildServiceFactory implements CommandLineBuildServiceFactor
   }
 
   @NotNull
-  public CommandLineBuildService createService()
-  {
+  public CommandLineBuildService createService() {
     return new AdvinstBuildService(mArtifactsWatcher, mInspectionsReporter);
   }
 
   @NotNull
-  public AgentBuildRunnerInfo getBuildRunnerInfo()
-  {
+  public AgentBuildRunnerInfo getBuildRunnerInfo() {
     return this;
   }
 }

@@ -1,35 +1,35 @@
 <?xml version="1.0"?>
 <assembly>
-    <id>plugin-agent-assembly</id>
-    <includeBaseDirectory>false</includeBaseDirectory>
-    <formats>
-        <format>zip</format>
-    </formats>
-    <files>
-        <file>
-            <source>../advinst-agent/teamcity-plugin.xml</source>
-            <outputDirectory>/</outputDirectory>
-        </file>
-    </files>
-    <moduleSets>
-        <moduleSet>
-            <useAllReactorProjects>true</useAllReactorProjects>
+  <id>plugin-agent-assembly</id>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <files>
+    <file>
+      <source>../advinst-agent/teamcity-plugin.xml</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+  </files>
+  <moduleSets>
+    <moduleSet>
+      <useAllReactorProjects>true</useAllReactorProjects>
+      <includes>
+        <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-agent</include>
+        <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-common</include>
+      </includes>
+      <binaries>
+        <outputDirectory>lib</outputDirectory>
+        <unpack>false</unpack>
+        <dependencySets>
+          <dependencySet>
             <includes>
-                <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-agent</include>
-                <include>caphyon.advinst.teamcity:advinst-teamcity-plugin-common</include>
+              <include>*</include>
             </includes>
-            <binaries>
-                <outputDirectory>lib</outputDirectory>
-                <unpack>false</unpack>
-                <dependencySets>
-                    <dependencySet>
-                        <includes>
-                            <include>*</include>
-                        </includes>
-                    </dependencySet>
-                </dependencySets>
-            </binaries>
-        </moduleSet>
-    </moduleSets>
+          </dependencySet>
+        </dependencySets>
+      </binaries>
+    </moduleSet>
+  </moduleSets>
 </assembly>
 

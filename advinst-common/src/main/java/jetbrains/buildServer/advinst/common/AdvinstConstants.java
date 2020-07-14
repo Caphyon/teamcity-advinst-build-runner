@@ -1,7 +1,6 @@
 package jetbrains.buildServer.advinst.common;
 
-public interface AdvinstConstants
-{
+public interface AdvinstConstants {
 
   String RUNNER_TYPE = "AdvancedInstaller";
   String ADVINST_BINARY = "AdvancedInstaller.com";
@@ -18,5 +17,6 @@ public interface AdvinstConstants
 
   String RUNNER_DISPLAY_NAME = "Advanced Installer";
   String RUNNER_DESCRIPTION = "Build setup packages.";
-
+  String ADVINST_TOOL_NAME = "advinst";
+  String Advinst_TOOL_VERSION = "advancedinstaller.version";
 }

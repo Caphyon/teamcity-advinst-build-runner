@@ -11,55 +11,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.intellij.util.xmlb.annotations.Collection;
 import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.advinst.common.AdvinstAipReader;
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import jetbrains.buildServer.advinst.common.AdvinstException;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
+import jetbrains.buildServer.agent.BuildRunnerContext;
 import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
 import jetbrains.buildServer.agent.inspections.InspectionReporter;
 import jetbrains.buildServer.agent.runner.BuildServiceAdapter;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.util.FileUtil;
 import jetbrains.buildServer.util.StringUtil;
-import jetbrains.buildServer.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class AdvinstBuildService extends BuildServiceAdapter
-{
+public class AdvinstBuildService extends BuildServiceAdapter {
 
-  private final ArtifactsWatcher mArtifactsWatcher;
-  private final InspectionReporter mInspectionReporter;
-  private File mOutputDirectory;
-  private File mXmlReportFile;
-  private File mHtmlReportFile;
   private List<File> mTempFiles = new ArrayList<File>();
 
-  public AdvinstBuildService(final ArtifactsWatcher artifactsWatcher, final InspectionReporter inspectionReporter)
-  {
-    mArtifactsWatcher = artifactsWatcher;
-    mInspectionReporter = inspectionReporter;
+  public AdvinstBuildService(final ArtifactsWatcher artifactsWatcher, final InspectionReporter inspectionReporter) {
   }
 
   @Override
-  public void afterInitialized() throws RunBuildException
-  {
+  public void afterInitialized() throws RunBuildException {
     super.afterInitialized();
   }
 
   @Override
-  public void beforeProcessStarted() throws RunBuildException
-  {
+  public void beforeProcessStarted() throws RunBuildException {
     getLogger().progressMessage("Running Advanced Installer");
+    BuildRunnerContext runnerContext = getRunnerContext();
+    Map<String, String> configParams = runnerContext.getConfigParameters();
+    configParams.get("foo");
   }
 
   @Override
-  public void afterProcessFinished() throws RunBuildException
-  {
+  public void afterProcessFinished() throws RunBuildException {
     super.afterProcessFinished();
-    for (File file : mTempFiles)
-    {
+    for (File file : mTempFiles) {
       FileUtil.delete(file);
     }
     mTempFiles.clear();
@@ -67,10 +56,8 @@ public class AdvinstBuildService extends BuildServiceAdapter
 
   @NotNull
   @Override
-  public BuildFinishedStatus getRunResult(final int exitCode)
-  {
-    if (exitCode != 0)
-    {
+  public BuildFinishedStatus getRunResult(final int exitCode) {
+    if (exitCode != 0) {
       return BuildFinishedStatus.FINISHED_FAILED;
     }
 
@@ -79,57 +66,47 @@ public class AdvinstBuildService extends BuildServiceAdapter
 
   @NotNull
   @Override
-  public ProgramCommandLine makeProgramCommandLine() throws RunBuildException
-  {
-    return new ProgramCommandLine()
-    {
+  public ProgramCommandLine makeProgramCommandLine() throws RunBuildException {
+    return new ProgramCommandLine() {
       @NotNull
       @Override
-      public String getExecutablePath() throws RunBuildException
-      {
+      public String getExecutablePath() throws RunBuildException {
         return getAdvinstComPath();
       }
 
       @NotNull
       @Override
-      public String getWorkingDirectory() throws RunBuildException
-      {
+      public String getWorkingDirectory() throws RunBuildException {
         return getCheckoutDirectory().getPath();
       }
 
       @NotNull
       @Override
-      public List<String> getArguments() throws RunBuildException
-      {
+      public List<String> getArguments() throws RunBuildException {
         return getAdvinstArguments();
       }
 
       @NotNull
       @Override
-      public Map<String, String> getEnvironment() throws RunBuildException
-      {
+      public Map<String, String> getEnvironment() throws RunBuildException {
         return getBuildParameters().getEnvironmentVariables();
       }
     };
   }
 
   @NotNull
-  private String getAdvinstComPath() throws RunBuildException
-  {
+  private String getAdvinstComPath() throws RunBuildException {
     String advinstRoot = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
-    if (StringUtil.isEmpty(advinstRoot))
-    {
+    if (StringUtil.isEmpty(advinstRoot)) {
       throw new RunBuildException("Advanced Installer root was not specified in build settings");
     }
 
-    if (Files.notExists(Paths.get(advinstRoot), LinkOption.NOFOLLOW_LINKS))
-    {
+    if (Files.notExists(Paths.get(advinstRoot), LinkOption.NOFOLLOW_LINKS)) {
       throw new RunBuildException("An invalid Advanced Installer root was specified in build settings. Path: " + advinstRoot);
     }
 
     File advinstComPath = new File(advinstRoot, AdvinstConstants.ADVINST_BIN_FOLDER + AdvinstConstants.ADVINST_BINARY);
-    if (Files.notExists(Paths.get(advinstComPath.getPath()), LinkOption.NOFOLLOW_LINKS))
-    {
+    if (Files.notExists(Paths.get(advinstComPath.getPath()), LinkOption.NOFOLLOW_LINKS)) {
       throw new RunBuildException("Cannot detect the Advanced Installer command line tool. Path: " + advinstComPath.getPath());
     }
 
@@ -137,8 +114,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
   }
 
   @NotNull
-  public List<String> getAdvinstArguments() throws RunBuildException
-  {
+  public List<String> getAdvinstArguments() throws RunBuildException {
     List<String> arguments = new ArrayList<String>();
     List<String> commands = new ArrayList<String>();
     arguments.add("/execute");
@@ -155,18 +131,15 @@ public class AdvinstBuildService extends BuildServiceAdapter
     {
       absoluteAipPath = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_PATH);
       getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_PATH + "=" + absoluteAipPath);
-      if (StringUtil.isEmpty(absoluteAipPath))
-      {
+      if (StringUtil.isEmpty(absoluteAipPath)) {
         throw new RunBuildException("Advanced Installer project path (.AIP) was not specified in build settings");
       }
       File aipPath = new File(absoluteAipPath);
-      if (!aipPath.isAbsolute())
-      {
+      if (!aipPath.isAbsolute()) {
         absoluteAipPath = new File(getCheckoutDirectory(), aipPath.getPath()).getAbsolutePath();
       }
 
-      if (Files.notExists(Paths.get(absoluteAipPath)))
-      {
+      if (Files.notExists(Paths.get(absoluteAipPath))) {
         throw new RunBuildException(String.format("Advanced Installer project file not found. Path: %s", absoluteAipPath));
       }
 
@@ -178,18 +151,13 @@ public class AdvinstBuildService extends BuildServiceAdapter
     {
       buildName = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_BUILD);
       getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_BUILD + "=" + buildName);
-      if (StringUtil.isNotEmpty(buildName))
-      {
+      if (StringUtil.isNotEmpty(buildName)) {
         AdvinstAipReader aipReader = new AdvinstAipReader(absoluteAipPath);
-        try
-        {
-          if (!buildName.isEmpty() && !aipReader.getBuilds().contains(buildName))
-          {
+        try {
+          if (!buildName.isEmpty() && !aipReader.getBuilds().contains(buildName)) {
             throw new RunBuildException("The specified build is not present in the project file");
           }
-        }
-        catch (AdvinstException ex)
-        {
+        } catch (AdvinstException ex) {
           throw new RunBuildException(ex.getMessage());
         }
       }
@@ -200,8 +168,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
     {
       packageName = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE);
       getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE + "=" + packageName);
-      if (StringUtil.isNotEmpty(packageName) && StringUtil.isEmpty(buildName))
-      {
+      if (StringUtil.isNotEmpty(packageName) && StringUtil.isEmpty(buildName)) {
         throw new RunBuildException("Using a package output name requires a build to be specified");
       }
     }
@@ -212,16 +179,13 @@ public class AdvinstBuildService extends BuildServiceAdapter
     {
       packageFolder = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FOLDER);
       getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FOLDER + "=" + packageFolder);
-      if ( StringUtil.isNotEmpty(packageFolder) && StringUtil.isEmpty(buildName))
-      {
+      if (StringUtil.isNotEmpty(packageFolder) && StringUtil.isEmpty(buildName)) {
         throw new RunBuildException("Using a package output folder requires a build to be specified");
       }
 
-      if ( StringUtil.isNotEmpty(packageFolder) )
-      {
+      if (StringUtil.isNotEmpty(packageFolder)) {
         File dir = new File(packageFolder);
-        if (!dir.isAbsolute())
-        {
+        if (!dir.isAbsolute()) {
           packageFolder = new File(getCheckoutDirectory(), dir.getPath()).getAbsolutePath();
         }
       }
@@ -229,7 +193,7 @@ public class AdvinstBuildService extends BuildServiceAdapter
 
     {
       resetSig = getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN)
-              && getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN).equals(Boolean.TRUE.toString());
+        && getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN).equals(Boolean.TRUE.toString());
     }
 
     {
@@ -237,26 +201,21 @@ public class AdvinstBuildService extends BuildServiceAdapter
       getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_EXTRA_COMMANDS + "=" + extraCommands);
     }
 
-    if (StringUtil.isNotEmpty(packageName))
-    {
+    if (StringUtil.isNotEmpty(packageName)) {
       commands.add(String.format("SetPackageName \"%s\" -buildname \"%s\"", packageName, buildName));
     }
 
-    if (StringUtil.isNotEmpty(packageFolder))
-    {
+    if (StringUtil.isNotEmpty(packageFolder)) {
       commands.add(String.format("SetOutputLocation -buildname \"%s\" -path \"%s\"", buildName, packageFolder));
     }
 
-    if (resetSig)
-    {
+    if (resetSig) {
       commands.add("ResetSig");
     }
 
-    if (StringUtil.isNotEmpty(extraCommands))
-    {
+    if (StringUtil.isNotEmpty(extraCommands)) {
       Iterable<String> tokens = StringUtil.tokenize(extraCommands, "\r\n");
-      for (String token : tokens)
-      {
+      for (String token : tokens) {
         commands.add(token);
       }
     }
@@ -264,14 +223,11 @@ public class AdvinstBuildService extends BuildServiceAdapter
     commands.add(String.format(StringUtil.isEmpty(buildName) ? "Build" : "Build -buildslist \"%s\"", buildName));
 
     File commandsFile;
-    try
-    {
+    try {
       commandsFile = createAicFile(commands);
       arguments.add(commandsFile.getPath());
       mTempFiles.add(commandsFile);
-    }
-    catch (IOException ex)
-    {
+    } catch (IOException ex) {
       throw new RunBuildException(ex.getMessage());
     }
 
@@ -279,31 +235,22 @@ public class AdvinstBuildService extends BuildServiceAdapter
   }
 
   @NotNull
-  private static File createAicFile(final List<String> aCommands) throws IOException
-  {
+  private static File createAicFile(final List<String> aCommands) throws IOException {
     File aicFile = File.createTempFile("aic", null);
     FileOutputStream outStream = new FileOutputStream(aicFile);
     OutputStreamWriter writer = null;
-    try
-    {
+    try {
       writer = new OutputStreamWriter(outStream, "UTF-16");
       writer.write(AdvinstConstants.ADVINST_AIC_HEADER + "\r\n");
-      for (String command : aCommands)
-      {
+      for (String command : aCommands) {
         writer.write(command + "\r\n");
       }
-    }
-    finally
-    {
-      try
-      {
-        if (null != writer)
-        {
+    } finally {
+      try {
+        if (null != writer) {
           writer.close();
         }
-      }
-      catch (IOException ex)
-      {
+      } catch (IOException ex) {
       }
     }
     return aicFile;
