@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>advinst-teamcity-plugin-build</artifactId>
+  <packaging>pom</packaging>
+  <version>1.1.2</version>
+  <name>TeamCity Advanced Installer Plugin Build</name>
+
+  <parent>
+    <artifactId>advinst-teamcity-plugin</artifactId>
+    <groupId>caphyon.advinst.teamcity</groupId>
+    <version>1.1.2</version>
+  </parent>
+
+  <developers>
+    <developer>
+      <id>advinst</id>
+      <name>Advanced Installer</name>
+      <email>support@advancedinstaller.com</email>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>MIT license</name>
+      <comments>All source code is under the MIT license.</comments>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <dependencies>
+    <dependency>
+      <groupId>caphyon.advinst.teamcity</groupId>
+      <artifactId>advinst-teamcity-plugin-agent</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>caphyon.advinst.teamcity</groupId>
+      <artifactId>advinst-teamcity-plugin-common</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>caphyon.advinst.teamcity</groupId>
+      <artifactId>advinst-teamcity-plugin-server</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+
+        <executions>
+          <execution>
+            <id>make-agent-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>advinst-agent</finalName>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>plugin-agent-assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
+              <outputDirectory>${project.parent.build.directory}</outputDirectory>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>plugin-assembly.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
