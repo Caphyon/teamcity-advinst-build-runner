@@ -13,22 +13,6 @@
     <version>1.1.2</version>
   </parent>
 
-  <developers>
-    <developer>
-      <id>advinst</id>
-      <name>Advanced Installer</name>
-      <email>support@advancedinstaller.com</email>
-    </developer>
-  </developers>
-
-  <licenses>
-    <license>
-      <name>MIT license</name>
-      <comments>All source code is under the MIT license.</comments>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
-    </license>
-  </licenses>
-
   <dependencies>
     <dependency>
       <groupId>caphyon.advinst.teamcity</groupId>
@@ -76,7 +60,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
+              <finalName>${project.parent.artifactId}</finalName>
               <outputDirectory>${project.parent.build.directory}</outputDirectory>
               <appendAssemblyId>false</appendAssemblyId>
               <descriptors>
