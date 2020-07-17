@@ -31,6 +31,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.jetbrains.teamcity</groupId>
+      <artifactId>common-api</artifactId>
+      <version>${teamcity-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.jetbrains.teamcity.internal</groupId>
       <artifactId>server</artifactId>
       <version>${teamcity-version}</version>
@@ -42,6 +49,26 @@
       <artifactId>tests-support</artifactId>
       <version>${teamcity-version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.teamcity.internal</groupId>
+      <artifactId>server-tools</artifactId>
+      <version>${teamcity-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.ini4j</groupId>
+      <artifactId>ini4j</artifactId>
+      <version>0.5.4</version>
     </dependency>
 
   </dependencies>
