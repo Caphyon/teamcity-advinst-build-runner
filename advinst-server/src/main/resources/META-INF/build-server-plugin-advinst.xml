@@ -6,4 +6,9 @@
        default-autowire="constructor">
 
   <bean id="AdvinstRunType" class="jetbrains.buildServer.advinst.server.AdvinstRunType"/>
+
+  <bean class="jetbrains.buildServer.advinst.server.AdvinstAvailableToolsFetcher"/>
+  <bean class="jetbrains.buildServer.advinst.server.AdvinstToolProvider"/>
+  <bean class="jetbrains.buildServer.advinst.server.AdvinstToolType"/>
+  <bean class="jetbrains.buildServer.advinst.server.AdvinstPropertiesProvider"/>
 </beans>

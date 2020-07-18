@@ -17,13 +17,13 @@ public class AdvinstDownloadableToolVersion implements DownloadableToolVersion {
   @NotNull
   @Override
   public String getDestinationFileName() {
-    return String.format(AdvinstConstants.ADVINST_VERSION_FILE_NAME, version);
+    return String.format(AdvinstConstants.ADVINST_TOOL_VERSION_FILE_NAME, version);
   }
 
   @NotNull
   @Override
   public String getDownloadUrl() {
-    return String.format(AdvinstConstants.ADVINST_VERSION_URL, version);
+    return String.format(AdvinstConstants.ADVINST_TOOL_VERSION_URL, version);
   }
 
   @NotNull
@@ -41,7 +41,7 @@ public class AdvinstDownloadableToolVersion implements DownloadableToolVersion {
   @NotNull
   @Override
   public String getId() {
-    return "Advinst-" + version;
+    return String.format(AdvinstConstants.ADVINST_TOOL_VERSION_ID, version);
   }
 
   @NotNull

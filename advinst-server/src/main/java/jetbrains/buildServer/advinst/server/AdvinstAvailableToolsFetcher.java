@@ -23,12 +23,12 @@ public class AdvinstAvailableToolsFetcher implements AvailableToolsFetcher {
       Wini updatesIni = new Wini(updatesIniUrl);
       final Collection<AdvinstDownloadableToolVersion> advinstVersions = new ArrayList<>();
       for (Profile.Section section : updatesIni.values()) {
-        advinstVersions.add(new AdvinstDownloadableToolVersion(section.getName()));
+        advinstVersions.add(new AdvinstDownloadableToolVersion(section.get("ProductVersion")));
       }
       return FetchAvailableToolsResult.createSuccessful(advinstVersions);
     } catch (IOException e) {
       return FetchAvailableToolsResult.createError(
-          "Failed to fetch available Advanced Installer versions from " + AdvinstConstants.ADVINST_VERSIONS_URL, e);
+          "Failed to fetch available Advanced Installer versions from " + AdvinstConstants.ADVINST_TOOL_VERSIONS_URL, e);
     }
   }
 }

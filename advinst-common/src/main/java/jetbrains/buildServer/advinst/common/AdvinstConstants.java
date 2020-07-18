@@ -17,6 +17,17 @@ public interface AdvinstConstants {
 
   String RUNNER_DISPLAY_NAME = "Advanced Installer";
   String RUNNER_DESCRIPTION = "Build setup packages.";
-  String ADVINST_TOOL_NAME = "advinst";
-  String Advinst_TOOL_VERSION = "advancedinstaller.version";
+
+
+
+  String ADVINST_TOOL_VERSIONS_URL = "https://www.advancedinstaller.com/downloads/updates.ini";
+  String ADVINST_TOOL_VERSION_URL = "https://www.advancedinstaller.com/downloads/%1$s/advinst.msi";
+  String ADVINST_TOOL_VERSION_FILE_NAME = "advancedinstaller-%1$s.msi";
+  String ADVINST_TOOL_VERSION_ID = "advancedinstaller-%1$s";
+  String ADVINST_TOOL_DISPLAY_NAME = "Advanced Installer";
+  String ADVINST_TOOL_NAME = "advancedinstaller";
+  String ADVINST_TOOL_VERSION = "advancedinstaller.version";
+  String ADVINST_TOOL_DEFAULT_VERSION = "advancedinstaller..default.version";
+  String ADVINST_TOOL_VERSIONS_HISTORY_URL = "https://www.advancedinstaller.com/version-history.html";
+  String ADVINST_TOOL_EXTRACT_CMD = "msiexec /a \"%1$s\" TARGETDIR=\"%2$s\" /qn";
 }
