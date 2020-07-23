@@ -3,7 +3,22 @@ package jetbrains.buildServer.advinst.server;
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import org.jetbrains.annotations.NotNull;
 
-public class AdvinstConstantsBean {
+public final class AdvinstConstantsBean {
+
+  @NotNull
+  public String getAdvinstToolName() {
+    return AdvinstConstants.ADVINST_TOOL_NAME;
+  }
+
+  @NotNull
+  public String getAdvinstToolVersion() {
+    return AdvinstConstants.ADVINST_TOOL_VERSION;
+  }
+
+  @NotNull
+  public String getAdvinstToolLicense() {
+    return AdvinstConstants.ADVINST_TOOL_LICENSE;
+  }
 
   @NotNull
   public String getAdvinstRoot() {
@@ -38,6 +53,11 @@ public class AdvinstConstantsBean {
   @NotNull
   public String getAipExtraCommands() {
     return AdvinstConstants.SETTINGS_ADVINST_AIP_EXTRA_COMMANDS;
+  }
+
+  @NotNull
+  public String getAdvinstToolLocation() {
+    return "server";
   }
 
 }
