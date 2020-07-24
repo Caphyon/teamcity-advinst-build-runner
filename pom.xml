@@ -128,11 +128,11 @@
         </configuration>
         <executions>
           <execution>
-            <id>install-jar-lib</id>
+            <id>org.jetbrains.teamcity:server-tools</id>
+            <phase>validate</phase>
             <goals>
               <goal>install-file</goal>
             </goals>
-            <phase>validate</phase>
           </execution>
         </executions>
       </plugin>

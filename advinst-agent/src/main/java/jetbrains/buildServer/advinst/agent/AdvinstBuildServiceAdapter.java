@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +15,17 @@ import jetbrains.buildServer.advinst.common.AdvinstAipReader;
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import jetbrains.buildServer.advinst.common.AdvinstException;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
-import jetbrains.buildServer.agent.BuildRunnerContext;
-import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
-import jetbrains.buildServer.agent.inspections.InspectionReporter;
 import jetbrains.buildServer.agent.runner.BuildServiceAdapter;
 import jetbrains.buildServer.agent.runner.ProgramCommandLine;
 import jetbrains.buildServer.util.FileUtil;
 import jetbrains.buildServer.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class AdvinstBuildService extends BuildServiceAdapter {
+public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
 
   private List<File> mTempFiles = new ArrayList<File>();
 
-  public AdvinstBuildService(final ArtifactsWatcher artifactsWatcher, final InspectionReporter inspectionReporter) {
+  public AdvinstBuildServiceAdapter() {
   }
 
   @Override
@@ -39,10 +35,6 @@ public class AdvinstBuildService extends BuildServiceAdapter {
 
   @Override
   public void beforeProcessStarted() throws RunBuildException {
-    getLogger().progressMessage("Running Advanced Installer");
-    BuildRunnerContext runnerContext = getRunnerContext();
-    Map<String, String> configParams = runnerContext.getConfigParameters();
-    configParams.get("foo");
   }
 
   @Override
@@ -71,7 +63,7 @@ public class AdvinstBuildService extends BuildServiceAdapter {
       @NotNull
       @Override
       public String getExecutablePath() throws RunBuildException {
-        return getAdvinstComPath();
+        return getToolPath(AdvinstConstants.ADVINST_TOOL_NAME);
       }
 
       @NotNull
@@ -95,25 +87,6 @@ public class AdvinstBuildService extends BuildServiceAdapter {
   }
 
   @NotNull
-  private String getAdvinstComPath() throws RunBuildException {
-    String advinstRoot = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
-    if (StringUtil.isEmpty(advinstRoot)) {
-      throw new RunBuildException("Advanced Installer root was not specified in build settings");
-    }
-
-    if (Files.notExists(Paths.get(advinstRoot), LinkOption.NOFOLLOW_LINKS)) {
-      throw new RunBuildException("An invalid Advanced Installer root was specified in build settings. Path: " + advinstRoot);
-    }
-
-    File advinstComPath = new File(advinstRoot, AdvinstConstants.ADVINST_BIN_FOLDER + AdvinstConstants.ADVINST_BINARY);
-    if (Files.notExists(Paths.get(advinstComPath.getPath()), LinkOption.NOFOLLOW_LINKS)) {
-      throw new RunBuildException("Cannot detect the Advanced Installer command line tool. Path: " + advinstComPath.getPath());
-    }
-
-    return advinstComPath.getPath();
-  }
-
-  @NotNull
   public List<String> getAdvinstArguments() throws RunBuildException {
     List<String> arguments = new ArrayList<String>();
     List<String> commands = new ArrayList<String>();
@@ -125,7 +98,7 @@ public class AdvinstBuildService extends BuildServiceAdapter {
     String packageFolder;
     String extraCommands;
     boolean resetSig = false;
-    //------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Compute and validate AIP project path. It can be either an absolute path
     // or relative to the checkout folder.
     {
@@ -140,13 +113,14 @@ public class AdvinstBuildService extends BuildServiceAdapter {
       }
 
       if (Files.notExists(Paths.get(absoluteAipPath))) {
-        throw new RunBuildException(String.format("Advanced Installer project file not found. Path: %s", absoluteAipPath));
+        throw new RunBuildException(
+            String.format("Advanced Installer project file not found. Path: %s", absoluteAipPath));
       }
 
       arguments.add(absoluteAipPath);
     }
 
-    //------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // compute and validate build name.
     {
       buildName = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_BUILD);
@@ -163,8 +137,8 @@ public class AdvinstBuildService extends BuildServiceAdapter {
       }
     }
 
-    //------------------------------------------------------------------------
-    //compute and validate the output package name
+    // ------------------------------------------------------------------------
+    // compute and validate the output package name
     {
       packageName = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE);
       getLogger().message(AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE + "=" + packageName);
@@ -173,7 +147,7 @@ public class AdvinstBuildService extends BuildServiceAdapter {
       }
     }
 
-    //------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Compute and validate output folder path. It can be either an absolute path
     // or relative to the build workspace folder.
     {
@@ -193,7 +167,7 @@ public class AdvinstBuildService extends BuildServiceAdapter {
 
     {
       resetSig = getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN)
-        && getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN).equals(Boolean.TRUE.toString());
+          && getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN).equals(Boolean.TRUE.toString());
     }
 
     {

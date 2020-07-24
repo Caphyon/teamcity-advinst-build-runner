@@ -9,22 +9,22 @@
 
 <l:settingsGroup title="Advanced Installer Tool">
   <tr>
-    <th><label for="${constants.advinstToolVersion}">Choose version:
+    <th><label for="${constants.advinstRoot}">Choose version:
         <l:star /></label></th>
     </th>
     <td>
       <jsp:include
-        page="/tools/selector.html?toolType=${constants.advinstToolName}&versionParameterName=${constants.advinstToolVersion}&toolLocation=${constants.advinstToolLocation}&class=longField" />
+        page="/tools/selector.html?toolType=${constants.advinstToolName}&versionParameterName=${constants.advinstRoot}&toolLocation=${constants.advinstToolLocation}&class=longField" />
     </td>
   </tr>
 
   <tr>
-    <th><label for="${constants.advinstToolLicense}">License ID:
+    <th><label for="${constants.advinstLicense}">License ID:
       </label></th>
     </th>
     <td>
-      <props:passwordProperty name="${constants.advinstToolLicense}" className="longField" />
-      <span class="error" id="error_${constants.advinstToolLicense}"></span>
+      <props:passwordProperty name="${constants.advinstLicense}" className="longField" />
+      <span class="error" id="error_${constants.advinstLicense}"></span>
       <span class="smallNote">Your Advanced Installer license ID. Leave this field empty for Simple project
         types.</span>
     </td>

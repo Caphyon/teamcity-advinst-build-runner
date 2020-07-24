@@ -11,13 +11,8 @@ public final class AdvinstConstantsBean {
   }
 
   @NotNull
-  public String getAdvinstToolVersion() {
-    return AdvinstConstants.ADVINST_TOOL_VERSION;
-  }
-
-  @NotNull
-  public String getAdvinstToolLicense() {
-    return AdvinstConstants.ADVINST_TOOL_LICENSE;
+  public String getAdvinstLicense() {
+    return AdvinstConstants.SETTINGS_ADVINST_LICENSE;
   }
 
   @NotNull

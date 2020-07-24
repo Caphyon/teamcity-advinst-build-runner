@@ -3,8 +3,6 @@ package jetbrains.buildServer.advinst.agent;
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import jetbrains.buildServer.agent.AgentBuildRunnerInfo;
 import jetbrains.buildServer.agent.BuildAgentConfiguration;
-import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
-import jetbrains.buildServer.agent.inspections.InspectionReporter;
 import jetbrains.buildServer.agent.runner.CommandLineBuildService;
 import jetbrains.buildServer.agent.runner.CommandLineBuildServiceFactory;
 import org.apache.log4j.Logger;
@@ -14,13 +12,7 @@ public class AdvinstBuildServiceFactory implements CommandLineBuildServiceFactor
 
   private static final Logger LOG = Logger.getLogger(AdvinstBuildServiceFactory.class);
 
-  private final ArtifactsWatcher mArtifactsWatcher;
-  private final InspectionReporter mInspectionsReporter;
-
-  public AdvinstBuildServiceFactory(@NotNull final ArtifactsWatcher artifactsWatcher,
-                                    @NotNull final InspectionReporter inspectionsReporter) {
-    mArtifactsWatcher = artifactsWatcher;
-    mInspectionsReporter = inspectionsReporter;
+  public AdvinstBuildServiceFactory() {
   }
 
   @NotNull
@@ -38,7 +30,7 @@ public class AdvinstBuildServiceFactory implements CommandLineBuildServiceFactor
 
   @NotNull
   public CommandLineBuildService createService() {
-    return new AdvinstBuildService(mArtifactsWatcher, mInspectionsReporter);
+    return new AdvinstBuildServiceAdapter();
   }
 
   @NotNull
