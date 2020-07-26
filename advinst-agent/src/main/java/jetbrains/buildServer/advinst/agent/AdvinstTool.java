@@ -31,7 +31,7 @@ public final class AdvinstTool {
     licenseId = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_LICENSE);
     enablePwershell = runner.getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL);
     agentToolsDir = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_TOOLS);
-    agentName = runner.getConfigParameters().get(AgentRuntimeProperties.AGENT_NAME);
+    agentName = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_NAME);
   }
 
   public void unpack() throws AdvinstException {
@@ -69,7 +69,8 @@ public final class AdvinstTool {
       }
 
     } catch (Exception e) {
-      throw new AdvinstException("Failed to deploy Advanved Innstaller tool to runner " + agentName, e);
+      throw new AdvinstException(
+          "Failed to deploy Advanved Innstaller tool to agent " + agentName + ". Error: " + e.getMessage(), e);
     }
   }
 
