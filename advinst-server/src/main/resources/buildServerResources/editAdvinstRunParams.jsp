@@ -29,6 +29,15 @@
         types.</span>
     </td>
   </tr>
+
+  <tr></tr>
+  <th><label for="${constants.advinstEnablePowershell}">Enable Powershell Support </label></th>
+  <td>
+    <props:checkboxProperty name="${constants.advinstEnablePowershell}" />
+    <span class="error" id="error_${constants.advinstEnablePowershell}"></span>
+  </td>
+  </tr>
+
 </l:settingsGroup>
 
 <l:settingsGroup title="Build Options">

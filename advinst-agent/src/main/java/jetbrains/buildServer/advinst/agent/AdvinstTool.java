@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import com.intellij.openapi.util.text.StringUtil;
 
@@ -16,13 +17,15 @@ public final class AdvinstTool {
 
   private final String rootFolder;
   private final String licenseId;
+  private final boolean enablePwershell;
   private final String agentToolsDir;
   private static final String UNPACK_FOLDER = ".unpacked";
   private static final String ADVINST_SUBPATH = "bin\\x86\\AdvancedInstaller.com";
 
-  public AdvinstTool(final String rootFolder, final String licenseId, final String agentToolsDir) {
-    this.rootFolder = rootFolder;
-    this.licenseId = licenseId;
+  public AdvinstTool(final Map<String, String> runnerParamenters, final String agentToolsDir) {
+    this.rootFolder = runnerParamenters.get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
+    this.licenseId = runnerParamenters.get(AdvinstConstants.SETTINGS_ADVINST_LICENSE);
+    this.enablePwershell = runnerParamenters.containsKey(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL);
     this.agentToolsDir = agentToolsDir;
   }
 
@@ -48,6 +51,14 @@ public final class AdvinstTool {
       if (!StringUtil.isEmpty(this.licenseId)) {
         final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, getPath(), this.licenseId);
         ret = Runtime.getRuntime().exec(registerCmd).waitFor();
+        if (0 != ret)
+          throw new Exception();
+      }
+      //Enable powershell 
+      if (this.enablePwershell)
+      {
+        final String registerCom = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_COM, getPath());
+        ret = Runtime.getRuntime().exec(registerCom).waitFor();
         if (0 != ret)
           throw new Exception();
       }

@@ -55,4 +55,9 @@ public final class AdvinstConstantsBean {
     return "server";
   }
 
+  @NotNull
+  public String getAdvinstEnablePowershell() {
+    return AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL;
+  }
+
 }

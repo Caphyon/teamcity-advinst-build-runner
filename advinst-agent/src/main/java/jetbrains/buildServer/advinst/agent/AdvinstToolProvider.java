@@ -42,9 +42,7 @@ public class AdvinstToolProvider implements ToolProvider {
   public String getPath(@NotNull final String toolName, @NotNull final AgentRunningBuild build,
       @NotNull final BuildRunnerContext runner) {
     final String agentToolsDir = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_TOOLS);
-    final String advinstRoot = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
-    final String licenseId = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_LICENSE); 
-    AdvinstTool tool = new AdvinstTool(advinstRoot, licenseId, agentToolsDir);
+    AdvinstTool tool = new AdvinstTool(runner.getRunnerParameters(), agentToolsDir);
     tool.unpack();
     return tool.getPath();
   }
