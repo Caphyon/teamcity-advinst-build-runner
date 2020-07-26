@@ -10,6 +10,9 @@ import java.util.Map;
 import com.intellij.openapi.util.text.StringUtil;
 
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
+import jetbrains.buildServer.advinst.common.AdvinstException;
+import jetbrains.buildServer.agent.AgentRuntimeProperties;
+import jetbrains.buildServer.agent.BuildRunnerContext;
 import jetbrains.buildServer.agent.ToolCannotBeFoundException;
 import jetbrains.buildServer.util.FileUtil;
 
@@ -19,74 +22,73 @@ public final class AdvinstTool {
   private final String licenseId;
   private final boolean enablePwershell;
   private final String agentToolsDir;
+  private final String agentName;
   private static final String UNPACK_FOLDER = ".unpacked";
   private static final String ADVINST_SUBPATH = "bin\\x86\\AdvancedInstaller.com";
 
-  public AdvinstTool(final Map<String, String> runnerParamenters, final String agentToolsDir) {
-    this.rootFolder = runnerParamenters.get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
-    this.licenseId = runnerParamenters.get(AdvinstConstants.SETTINGS_ADVINST_LICENSE);
-    this.enablePwershell = runnerParamenters.containsKey(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL);
-    this.agentToolsDir = agentToolsDir;
+  public AdvinstTool(BuildRunnerContext runner) {
+    rootFolder = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
+    licenseId = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_LICENSE);
+    enablePwershell = runner.getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL);
+    agentToolsDir = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_TOOLS);
+    agentName = runner.getConfigParameters().get(AgentRuntimeProperties.AGENT_NAME);
   }
 
-  public void unpack() {
+  public void unpack() throws AdvinstException {
 
     // If the path is not under the agent "tools" dir we have nothing to unpack.
     // It means that a custom root was specified
-    if (!Paths.get(this.rootFolder).startsWith(this.agentToolsDir))
+    if (!Paths.get(rootFolder).startsWith(agentToolsDir))
       return;
 
     try {
       // Unpack
-      if (!Files.exists(Paths.get(getPath())))
-      {
+      if (!Files.exists(Paths.get(getPath()))) {
         final File msiFile = getMsiFile();
         final String extractCmd = String.format(AdvinstConstants.ADVINST_TOOL_EXTRACT_CMD, msiFile.toString(),
             getExtractLocation().toString());
         int ret = Runtime.getRuntime().exec(extractCmd).waitFor();
         if (0 != ret)
-          throw new Exception();
+          throw new Exception("Failed to unpack Advanced Installer tool");
       }
 
       // Register
-      if (!StringUtil.isEmpty(this.licenseId)) {
-        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, getPath(), this.licenseId);
+      if (!StringUtil.isEmpty(licenseId)) {
+        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, getPath(), licenseId);
         int ret = Runtime.getRuntime().exec(registerCmd).waitFor();
         if (0 != ret)
-          throw new Exception();
+          throw new Exception("Failed to register Advanced Installer tool");
       }
 
-      //Enable powershell 
-      if (this.enablePwershell)
-      {
+      // Enable powershell
+      if (enablePwershell) {
         final String registerCom = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_COM, getPath());
         int ret = Runtime.getRuntime().exec(registerCom).waitFor();
         if (0 != ret)
-          throw new Exception();
+          throw new Exception("Failed to enable PowerShell support");
       }
 
     } catch (Exception e) {
-      throw new ToolCannotBeFoundException("Failed to extract Advanced Installer tool");
+      throw new AdvinstException("Failed to deploy Advanved Innstaller tool to runner " + agentName, e);
     }
   }
 
   public final String getPath() {
-    if (Paths.get(this.rootFolder).startsWith(this.agentToolsDir))
-      return Paths.get(this.rootFolder, UNPACK_FOLDER, ADVINST_SUBPATH).toString(); //
+    if (Paths.get(rootFolder).startsWith(agentToolsDir))
+      return Paths.get(rootFolder, UNPACK_FOLDER, ADVINST_SUBPATH).toString(); //
     else
-      return Paths.get(this.rootFolder, ADVINST_SUBPATH).toString(); // Custom root dir
+      return Paths.get(rootFolder, ADVINST_SUBPATH).toString(); // Custom root dir
   }
 
   private File getMsiFile() throws FileNotFoundException {
-    File msiFile = FileUtil.findFile(new FileUtil.RegexFileFilter("advancedinstaller-.*\\.msi"),
-        new File(this.rootFolder));
+    File msiFile = FileUtil.findFile(new FileUtil.RegexFileFilter("advancedinstaller-.*\\.msi"), new File(rootFolder));
     if (!msiFile.exists()) {
-      throw new FileNotFoundException("Could not locate Advanced Installer tool setup in " + this.rootFolder);
+      throw new FileNotFoundException("Could not locate Advanced Installer tool setup in " + rootFolder);
     }
     return msiFile;
   }
 
   private Path getExtractLocation() {
-    return Paths.get(this.rootFolder, UNPACK_FOLDER);
+    return Paths.get(rootFolder, UNPACK_FOLDER);
   }
 }

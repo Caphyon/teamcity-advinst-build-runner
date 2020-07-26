@@ -5,5 +5,4 @@
        default-autowire="constructor">
   <bean name="AdvinstRunner" class="jetbrains.buildServer.advinst.agent.AdvinstBuildServiceFactory"/>
   <bean name="AdvinstAgentListener" class="jetbrains.buildServer.advinst.agent.AdvinstAgentListener"/>
-  <bean name="AdvinstToolProvider" class="jetbrains.buildServer.advinst.agent.AdvinstToolProvider"/>
 </beans>

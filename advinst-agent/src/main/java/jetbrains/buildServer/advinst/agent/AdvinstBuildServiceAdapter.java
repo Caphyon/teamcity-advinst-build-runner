@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
 
   private List<File> mTempFiles = new ArrayList<File>();
+  private AdvinstTool mAdvinstTool = null;
 
   public AdvinstBuildServiceAdapter() {
   }
@@ -31,10 +32,16 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
   @Override
   public void afterInitialized() throws RunBuildException {
     super.afterInitialized();
+    mAdvinstTool = new AdvinstTool(getRunnerContext());
   }
 
   @Override
   public void beforeProcessStarted() throws RunBuildException {
+    try {
+      mAdvinstTool.unpack();
+    } catch (AdvinstException e) {
+      getLogger().message(e.getMessage());
+    }
   }
 
   @Override
@@ -63,7 +70,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
       @NotNull
       @Override
       public String getExecutablePath() throws RunBuildException {
-        return getToolPath(AdvinstConstants.ADVINST_TOOL_NAME);
+        return mAdvinstTool.getPath();
       }
 
       @NotNull
