@@ -31,34 +31,36 @@ public final class AdvinstTool {
 
   public void unpack() {
 
-    if (Files.exists(Paths.get(getPath())))
-      return;
-
-    // If the path is not under the agent "tools" dir we have nothing to unpack. 
+    // If the path is not under the agent "tools" dir we have nothing to unpack.
     // It means that a custom root was specified
     if (!Paths.get(this.rootFolder).startsWith(this.agentToolsDir))
       return;
 
     try {
       // Unpack
-      final File msiFile = getMsiFile();
-      final String extractCmd = String.format(AdvinstConstants.ADVINST_TOOL_EXTRACT_CMD, msiFile.toString(),
-          getExtractLocation().toString());
-      int ret = Runtime.getRuntime().exec(extractCmd).waitFor();
-      if (0 != ret)
-        throw new Exception();
-      // Register
-      if (!StringUtil.isEmpty(this.licenseId)) {
-        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, getPath(), this.licenseId);
-        ret = Runtime.getRuntime().exec(registerCmd).waitFor();
+      if (!Files.exists(Paths.get(getPath())))
+      {
+        final File msiFile = getMsiFile();
+        final String extractCmd = String.format(AdvinstConstants.ADVINST_TOOL_EXTRACT_CMD, msiFile.toString(),
+            getExtractLocation().toString());
+        int ret = Runtime.getRuntime().exec(extractCmd).waitFor();
         if (0 != ret)
           throw new Exception();
       }
+
+      // Register
+      if (!StringUtil.isEmpty(this.licenseId)) {
+        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, getPath(), this.licenseId);
+        int ret = Runtime.getRuntime().exec(registerCmd).waitFor();
+        if (0 != ret)
+          throw new Exception();
+      }
+
       //Enable powershell 
       if (this.enablePwershell)
       {
         final String registerCom = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_COM, getPath());
-        ret = Runtime.getRuntime().exec(registerCom).waitFor();
+        int ret = Runtime.getRuntime().exec(registerCom).waitFor();
         if (0 != ret)
           throw new Exception();
       }
