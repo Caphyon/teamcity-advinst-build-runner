@@ -33,26 +33,25 @@ public final class AdvinstTool {
   }
 
   public void unpack() throws AdvinstException {
-
-    // If the path is not under the agent "tools" dir we have nothing to unpack.
-    // It means that a custom root was specified
-    if (!Paths.get(rootFolder).startsWith(agentToolsDir))
-      return;
-
     try {
       // Unpack
-      if (!Files.exists(Paths.get(getPath()))) {
+      final String advinstToolPath = getPath();
+      if (Files.notExists(Paths.get(advinstToolPath)) && Paths.get(rootFolder).startsWith(agentToolsDir)) {
         final File msiFile = getMsiFile();
         final String extractCmd = String.format(AdvinstConstants.ADVINST_TOOL_EXTRACT_CMD, msiFile.toString(),
-            getExtractLocation().toString());
+            getUnpackDir().toString());
         int ret = Runtime.getRuntime().exec(extractCmd).waitFor();
         if (0 != ret)
           throw new Exception("Failed to unpack Advanced Installer tool");
       }
 
+      // Verify the tool actually exists after unpack
+      if (Files.notExists(Paths.get(advinstToolPath)))
+        throw new FileNotFoundException("Failed to locate Advanced Installer tool " + advinstToolPath);
+
       // Register
       if (!StringUtil.isEmpty(licenseId)) {
-        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, getPath(), licenseId);
+        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, advinstToolPath, licenseId);
         int ret = Runtime.getRuntime().exec(registerCmd).waitFor();
         if (0 != ret)
           throw new Exception("Failed to register Advanced Installer tool");
@@ -60,10 +59,10 @@ public final class AdvinstTool {
 
       // Enable powershell
       if (enablePwershell) {
-        final String registerCom = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_COM, getPath());
+        final String registerCom = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_COM, advinstToolPath);
         int ret = Runtime.getRuntime().exec(registerCom).waitFor();
         if (0 != ret)
-          throw new Exception("Failed to enable PowerShell support");
+          throw new Exception("Failed to enable PowerShell support. Make sure the agent runs elevated");
       }
 
     } catch (Exception e) {
@@ -87,7 +86,7 @@ public final class AdvinstTool {
     return msiFile;
   }
 
-  private Path getExtractLocation() {
+  private Path getUnpackDir() {
     return Paths.get(rootFolder, UNPACK_FOLDER);
   }
 }

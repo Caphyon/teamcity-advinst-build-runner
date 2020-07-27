@@ -15,6 +15,9 @@
     <td>
       <jsp:include
         page="/tools/selector.html?toolType=${constants.advinstToolName}&versionParameterName=${constants.advinstRoot}&toolLocation=${constants.advinstToolLocation}&class=longField" />
+      <span class="smallNote">When selecting custom path, you need to specify an existing Advanced Installer install
+        directory. E.g. C:\Program Files (x86)\Caphyon\Advanced
+        Installer x.x</span>
     </td>
   </tr>
 
@@ -26,14 +29,6 @@
       <span class="error" id="error_${constants.advinstLicense}"></span>
       <span class="smallNote">Your Advanced Installer license ID. Leave this field empty for Simple project
         types.</span>
-    </td>
-  </tr>
-
-  <tr>
-    <th><label for="${constants.advinstEnablePowershell}">Enable Powershell Support</label></th>
-    <td>
-      <props:checkboxProperty name="${constants.advinstEnablePowershell}"/>
-      <span class="error" id="error_${constants.advinstEnablePowershell}"></span>
     </td>
   </tr>
 
