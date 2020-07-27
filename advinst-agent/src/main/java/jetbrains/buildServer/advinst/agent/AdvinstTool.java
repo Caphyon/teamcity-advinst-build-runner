@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 import com.intellij.openapi.util.text.StringUtil;
 
@@ -13,7 +12,6 @@ import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import jetbrains.buildServer.advinst.common.AdvinstException;
 import jetbrains.buildServer.agent.AgentRuntimeProperties;
 import jetbrains.buildServer.agent.BuildRunnerContext;
-import jetbrains.buildServer.agent.ToolCannotBeFoundException;
 import jetbrains.buildServer.util.FileUtil;
 
 public final class AdvinstTool {
@@ -70,7 +68,7 @@ public final class AdvinstTool {
 
     } catch (Exception e) {
       throw new AdvinstException(
-          "Failed to deploy Advanved Innstaller tool to agent " + agentName + ". Error: " + e.getMessage(), e);
+          "Failed to deploy Advanved Installer tool to agent " + agentName + ". Error: " + e.getMessage(), e);
     }
   }
 

@@ -40,7 +40,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
     try {
       mAdvinstTool.unpack();
     } catch (AdvinstException e) {
-      getLogger().message(e.getMessage());
+      throw new RunBuildException(e.getMessage());
     }
   }
 
