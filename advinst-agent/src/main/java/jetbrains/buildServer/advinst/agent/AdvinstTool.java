@@ -18,7 +18,6 @@ public final class AdvinstTool {
 
   private final String rootFolder;
   private final String licenseId;
-  private final boolean enablePwershell;
   private final String agentToolsDir;
   private final String agentName;
   private static final String UNPACK_FOLDER = ".unpacked";
@@ -27,7 +26,6 @@ public final class AdvinstTool {
   public AdvinstTool(BuildRunnerContext runner) {
     rootFolder = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
     licenseId = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_LICENSE);
-    enablePwershell = runner.getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL);
     agentToolsDir = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_TOOLS);
     agentName = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_NAME);
   }
@@ -55,14 +53,6 @@ public final class AdvinstTool {
         int ret = Runtime.getRuntime().exec(registerCmd).waitFor();
         if (0 != ret)
           throw new Exception("Failed to register Advanced Installer tool");
-      }
-
-      // Enable powershell
-      if (enablePwershell) {
-        final String registerCom = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_COM, advinstToolPath);
-        int ret = Runtime.getRuntime().exec(registerCom).waitFor();
-        if (0 != ret)
-          throw new Exception("Failed to enable PowerShell support. Make sure the agent runs elevated");
       }
 
     } catch (Exception e) {

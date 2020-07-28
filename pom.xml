@@ -9,7 +9,7 @@
   <name>TeamCity Advanced Installer Plugin</name>
 
   <properties>
-    <teamcity-version>2018.1</teamcity-version>
+    <teamcity-version>2017.1</teamcity-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <plugin.version>${project.version}</plugin.version>
     <release.version>${project.version}</release.version>
@@ -112,20 +112,12 @@
           </execution>
         </executions>
       </plugin>
-
+      <!-- install server-tools.jar to repo -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
         <version>3.0.0-M1</version>
         <inherited>false</inherited>
-        <configuration>
-          <groupId>org.jetbrains.teamcity.internal</groupId>
-          <artifactId>server-tools</artifactId>
-          <version>${teamcity-version}</version>
-          <packaging>jar</packaging>
-          <file>${basedir}/${teamcity-dir}/webapps/ROOT/WEB-INF/lib/server-tools.jar</file>
-          <generatePom>true</generatePom>
-        </configuration>
         <executions>
           <execution>
             <id>org.jetbrains.teamcity:server-tools</id>
@@ -133,6 +125,14 @@
             <goals>
               <goal>install-file</goal>
             </goals>
+            <configuration>
+              <groupId>org.jetbrains.teamcity.internal</groupId>
+              <artifactId>server-tools</artifactId>
+              <version>${teamcity-version}</version>
+              <packaging>jar</packaging>
+              <file>${basedir}/${teamcity-dir}/webapps/ROOT/WEB-INF/lib/server-tools.jar</file>
+              <generatePom>true</generatePom>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -140,6 +140,45 @@
     </plugins>
 
   </build>
+
+  <profiles>
+    <!-- Install common-tools.jar to repo, if it exists. Newer distributions of TeamCity do not include this file -->
+    <profile>
+      <id>pre-teamcity-2018</id>
+      <activation>
+        <file>
+          <exists>${basedir}/${teamcity-dir}/webapps/ROOT/WEB-INF/lib/common-tools.jar</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-install-plugin</artifactId>
+            <version>3.0.0-M1</version>
+            <inherited>false</inherited>
+            <executions>
+              <execution>
+                <id>org.jetbrains.teamcity:common-tools</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>install-file</goal>
+                </goals>
+                <configuration>
+                  <groupId>org.jetbrains.teamcity.internal</groupId>
+                  <artifactId>common-tools</artifactId>
+                  <version>${teamcity-version}</version>
+                  <packaging>jar</packaging>
+                  <file>${basedir}/${teamcity-dir}/webapps/ROOT/WEB-INF/lib/common-tools.jar</file>
+                  <generatePom>true</generatePom>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <modules>
     <module>advinst-server</module>
