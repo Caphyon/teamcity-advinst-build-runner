@@ -12,9 +12,6 @@
     <teamcity-version>2017.1</teamcity-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <plugin.version>${project.version}</plugin.version>
-    <release.version>${project.version}</release.version>
-    <release.tag>v${project.version}</release.tag>
-    <release.notes>Please see the CHANGELOG.md file for list of changes.</release.notes>
     <teamcity-dir>.teamcity/${teamcity-version}</teamcity-dir>
   </properties>
 
@@ -92,27 +89,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>de.jutzig</groupId>
-        <artifactId>github-release-plugin</artifactId>
-        <version>1.1.1</version>
-        <executions>
-          <execution>
-            <id>github-upload</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>release</goal>
-            </goals>
-            <inherited>false</inherited>
-            <configuration>
-              <releaseName>Release ${release.version}</releaseName>
-              <description>${release.notes}</description>
-              <tag>${release.tag}</tag>
-              <artifact>${project.build.directory}/${project.artifactId}-${release.version}.zip</artifact>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <!-- install server-tools.jar to repo -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
