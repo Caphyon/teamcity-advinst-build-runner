@@ -5,11 +5,10 @@ package jetbrains.buildServer.advinst.common;
  *
  * @author Ciprian Burca
  */
-public class AdvinstException extends Exception
-{
+public class AdvinstException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-  public AdvinstException(String message, Throwable t)
-  {
+  public AdvinstException(String message, Throwable t) {
     super(message, t);
   }
 }

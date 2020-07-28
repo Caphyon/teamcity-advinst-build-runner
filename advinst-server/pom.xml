@@ -4,21 +4,26 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>advinst-teamcity-plugin-server</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.2</version>
+  <version>1.2</version>
   <name>TeamCity Advanced Installer Plugin Server</name>
 
   <parent>
     <artifactId>advinst-teamcity-plugin</artifactId>
     <groupId>caphyon.advinst.teamcity</groupId>
-    <version>1.1.2</version>
+    <version>1.2</version>
   </parent>
+
+  <properties>
+    <teamcity-version>2017.1</teamcity-version>
+    <teamcity-dir>.teamcity/${teamcity-version}</teamcity-dir>
+  </properties>
 
   <dependencies>
 
     <dependency>
       <groupId>caphyon.advinst.teamcity</groupId>
       <artifactId>advinst-teamcity-plugin-common</artifactId>
-      <version>1.1.2</version>
+      <version>1.2</version>
       <scope>compile</scope>
     </dependency>
 
@@ -31,10 +36,64 @@
 
     <dependency>
       <groupId>org.jetbrains.teamcity</groupId>
+      <artifactId>common-api</artifactId>
+      <version>${teamcity-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.teamcity.internal</groupId>
+      <artifactId>server</artifactId>
+      <version>${teamcity-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.teamcity</groupId>
       <artifactId>tests-support</artifactId>
       <version>${teamcity-version}</version>
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.jetbrains.teamcity.internal</groupId>
+      <artifactId>server-tools</artifactId>
+      <version>${teamcity-version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.ini4j</groupId>
+      <artifactId>ini4j</artifactId>
+      <version>0.5.4</version>
+    </dependency>
+
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>pre-teamcity-2018</id>
+      <activation>
+        <file>
+          <exists>${basedir}/../${teamcity-dir}/webapps/ROOT/WEB-INF/lib/common-tools.jar</exists>
+        </file>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.jetbrains.teamcity.internal</groupId>
+          <artifactId>common-tools</artifactId>
+          <version>${teamcity-version}</version>
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
 </project>

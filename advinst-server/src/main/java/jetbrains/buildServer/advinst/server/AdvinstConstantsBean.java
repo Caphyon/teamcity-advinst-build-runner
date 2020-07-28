@@ -3,49 +3,56 @@ package jetbrains.buildServer.advinst.server;
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import org.jetbrains.annotations.NotNull;
 
-public class AdvinstConstantsBean
-{
+public final class AdvinstConstantsBean {
 
   @NotNull
-  public String getAdvinstRoot()
-  {
+  public String getAdvinstToolName() {
+    return AdvinstConstants.ADVINST_TOOL_NAME;
+  }
+
+  @NotNull
+  public String getAdvinstLicense() {
+    return AdvinstConstants.SETTINGS_ADVINST_LICENSE;
+  }
+
+  @NotNull
+  public String getAdvinstRoot() {
     return AdvinstConstants.SETTINGS_ADVINST_ROOT;
   }
 
   @NotNull
-  public String getAipPath()
-  {
+  public String getAipPath() {
     return AdvinstConstants.SETTINGS_ADVINST_AIP_PATH;
   }
 
   @NotNull
-  public String getAipBuild()
-  {
+  public String getAipBuild() {
     return AdvinstConstants.SETTINGS_ADVINST_AIP_BUILD;
   }
 
   @NotNull
-  public String getAipSetupFile()
-  {
+  public String getAipSetupFile() {
     return AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FILE;
   }
 
   @NotNull
-  public String getAipSetupFolder()
-  {
+  public String getAipSetupFolder() {
     return AdvinstConstants.SETTINGS_ADVINST_AIP_SETUP_FOLDER;
   }
 
   @NotNull
-  public String getAipDoNotSign()
-  {
+  public String getAipDoNotSign() {
     return AdvinstConstants.SETTINGS_ADVINST_AIP_DONOTSIGN;
   }
 
   @NotNull
-  public String getAipExtraCommands()
-  {
+  public String getAipExtraCommands() {
     return AdvinstConstants.SETTINGS_ADVINST_AIP_EXTRA_COMMANDS;
+  }
+
+  @NotNull
+  public String getAdvinstToolLocation() {
+    return "server";
   }
 
 }

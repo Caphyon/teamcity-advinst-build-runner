@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>advinst-teamcity-plugin-agent</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.2</version>
+  <version>1.2</version>
   <name>TeamCity Advanced Installer Plugin Agent</name>
 
   <parent>
     <artifactId>advinst-teamcity-plugin</artifactId>
     <groupId>caphyon.advinst.teamcity</groupId>
-    <version>1.1.2</version>
+    <version>1.2</version>
   </parent>
-
-  <developers>
-    <developer>
-      <id>advinst</id>
-      <name>Advanced Installer</name>
-      <email>support@advancedinstaller.com</email>
-    </developer>
-  </developers>
 
   <licenses>
     <license>
@@ -34,13 +27,20 @@
     <dependency>
       <groupId>caphyon.advinst.teamcity</groupId>
       <artifactId>advinst-teamcity-plugin-common</artifactId>
-      <version>1.1.2</version>
+      <version>1.2</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jetbrains.teamcity</groupId>
       <artifactId>agent-api</artifactId>
+      <version>${teamcity-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.teamcity.internal</groupId>
+      <artifactId>agent</artifactId>
       <version>${teamcity-version}</version>
       <scope>provided</scope>
     </dependency>
