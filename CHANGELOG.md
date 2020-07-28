@@ -4,13 +4,10 @@ Changelog of Advanced Installer plugin for TeamCity.
 
 ### Advanced Installer TeamCity Plugin  2.0
 
+__*Tne minimum required TeamCity version is now 2017.1.*__
+
 Features:
-* Automated deploy of Advanced Installer tool on agents
-
-Changes:
- * The minimum required TeamCity version is 2017.1
-
-
+* Automated deploy of Advanced Installer tool on agents.
 
 ### Advanced Installer TeamCity Plugin  1.1.2
 
