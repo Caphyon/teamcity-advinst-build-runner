@@ -60,7 +60,7 @@
               <goal>single</goal>
             </goals>
             <configuration>
-              <finalName>${project.parent.artifactId}</finalName>
+              <finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
               <outputDirectory>${project.parent.build.directory}</outputDirectory>
               <appendAssemblyId>false</appendAssemblyId>
               <descriptors>

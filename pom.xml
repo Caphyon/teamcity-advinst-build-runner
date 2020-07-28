@@ -88,6 +88,7 @@
         <configuration>
           <teamcityDir>${teamcity-dir}</teamcityDir>
           <downloadQuietly>true</downloadQuietly>
+          <pluginPackageName>${project.artifactId}-${project.version}.zip</pluginPackageName>
         </configuration>
       </plugin>
 
