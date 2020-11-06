@@ -7,6 +7,42 @@
 <jsp:useBean id="propertiesBean" scope="request" type="jetbrains.buildServer.controllers.BasePropertiesBean" />
 <jsp:useBean id="constants" class="jetbrains.buildServer.advinst.server.AdvinstConstantsBean" />
 
+<c:set var="advintRunTypeDeploy" value="${empty propertiesBean.properties['constants.aipPath']}" />
+
+<tr>
+  <th>
+    <label for="${constants.advinstRunType}">Run Type: <l:star /></label>
+  </th>
+  <td>
+    <script type="text/javascript">
+      advinstRunTypeChanged = function () {
+        var runType = $('<%=constants.getAdvinstRunType()%>').value;
+        if (runType == 'deploy') {
+          BS.Util.hide('advinstAipPathSection');
+          BS.Util.hide('advinstAipBuildSection');
+          BS.Util.hide('advinstAipSetupFileSection');
+          BS.Util.hide('advinstAipSetupFolderSection');
+          BS.Util.hide('advinstAipCommandsSection');
+          BS.Util.hide('advinstAipSignSection');
+        } else {
+          BS.Util.show('advinstAipPathSection');
+          BS.Util.show('advinstAipBuildSection');
+          BS.Util.show('advinstAipSetupFileSection');
+          BS.Util.show('advinstAipSetupFolderSection');
+          BS.Util.show('advinstAipCommandsSection');
+          BS.Util.show('advinstAipSignSection');
+        }
+        BS.VisibilityHandlers.updateVisibility('mainContent');
+      };
+    </script>
+    <props:selectProperty name="${constants.advinstRunType}" onchange="advinstRunTypeChanged()" className="longField">
+      <props:option value="deploy" selected="${advintRunTypeDeploy}">Deploy Advanced Installer</props:option>
+      <props:option value="build" selected="${not advintRunTypeDeploy}">Deploy Advanced Installer and build project
+      </props:option>
+    </props:selectProperty>
+  </td>
+</tr>
+
 <l:settingsGroup title="Advanced Installer Tool">
   <tr>
     <th><label for="${constants.advinstRoot}">Choose version:
@@ -16,8 +52,7 @@
       <jsp:include
         page="/tools/selector.html?toolType=${constants.advinstToolName}&versionParameterName=${constants.advinstRoot}&toolLocation=${constants.advinstToolLocation}&class=longField" />
       <span class="smallNote">When selecting custom path, you need to specify an existing Advanced Installer install
-        directory. E.g. C:\Program Files (x86)\Caphyon\Advanced
-        Installer x.x</span>
+        directory. E.g. C:\Program Files (x86)\Caphyon\Advanced Installer x.x</span>
     </td>
   </tr>
 
@@ -32,11 +67,19 @@
     </td>
   </tr>
 
+  <tr>
+    <th><label for="${constants.advinstEnablePowershell}">Enable PowerShell support</label></th>
+    <td>
+      <props:checkboxProperty name="${constants.advinstEnablePowershell}" />
+      <span class="error" id="error_${constants.advinstEnablePowershell}"></span>
+    </td>
+  </tr>
+
 </l:settingsGroup>
 
-<l:settingsGroup title="Build Options">
+<l:settingsGroup title="Advanced Installer Project">
 
-  <tr id="advinstAipPathSection">
+  <tr id="advinstAipPathSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
     <th><label for="${constants.aipPath}">AIP path:
         <l:star /></label></th>
     <td>
@@ -47,7 +90,7 @@
     </td>
   </tr>
 
-  <tr id="advinstAipBuildSection">
+  <tr id="advinstAipBuildSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
     <th><label for="${constants.aipBuild}">AIP build: </label></th>
     <td>
       <props:textProperty name="${constants.aipBuild}" className="longField" />
@@ -55,11 +98,7 @@
     </td>
   </tr>
 
-</l:settingsGroup>
-
-<l:settingsGroup title="Advanced Settings" className="advancedSetting">
-
-  <tr class="advancedSetting">
+  <tr id="advinstAipSetupFileSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
     <th><label for="${constants.aipSetupFile}">Output file: </label></th>
     <td>
       <props:textProperty name="${constants.aipSetupFile}" className="longField" />
@@ -67,8 +106,7 @@
     </td>
   </tr>
 
-
-  <tr class="advancedSetting">
+  <tr id="advinstAipSetupFolderSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
     <th><label for="${constants.aipSetupFolder}">Output folder: </label></th>
     <td>
       <props:textProperty name="${constants.aipSetupFolder}" className="longField" />
@@ -77,19 +115,19 @@
     </td>
   </tr>
 
-  <tr class="advancedSetting">
+  <tr id="advinstAipCommandsSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
     <th><label for="${constants.aipExtraCommands}">Commands: </label></th>
     <td>
-      <props:multilineProperty name="${constants.aipExtraCommands}" className="longField" linkTitle="Type commands"
-        cols="55" rows="5" expanded="true" />
+      <props:multilineProperty name="${constants.aipExtraCommands}" className="longField" linkTitle="" cols="55"
+        rows="5" expanded="true" />
       <span class="error" id="error_${constants.aipExtraCommands}"></span>
       <span class="smallNote">Advanced Installer edit commands that will be executed against the specified aip
         file.<br />
-        Example: SetVersion 1.2.3</span>
+        Example: SetVersion x.x.x</span>
     </td>
   </tr>
 
-  <tr class="advancedSetting">
+  <tr id="advinstAipSignSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
     <th><label for="${constants.aipDoNotSign}">Do not digitally sign package</label></th>
     <td>
       <props:checkboxProperty name="${constants.aipDoNotSign}" />

@@ -14,6 +14,9 @@ public interface AdvinstConstants {
   String SETTINGS_ADVINST_AIP_EXTRA_COMMANDS = "advancedinstaller.aip.extra.commands";
   String SETTINGS_ADVINST_LICENSE = "secure:advancedinstaller.license";
   String SETTINGS_ADVINST_ENABLE_POWERSHELL = "advancedinstaller.enable.powershell";
+  String SETTINGS_ADVINST_RUN_TYPE = "advancedinstaller.run.type";
+  String ADVINST_RUN_TYPE_DEPLOY = "deploy";
+  String ADVINST_RUN_TYPE_BUILD = "build";
 
   String RUNNER_DISPLAY_NAME = "Advanced Installer";
   String RUNNER_DESCRIPTION = "Build setups using Advanced Installer tool.";
@@ -24,11 +27,13 @@ public interface AdvinstConstants {
   String ADVINST_TOOL_VERSION_ID = "advancedinstaller-%1$s";
   String ADVINST_TOOL_DISPLAY_NAME = "Advanced Installer";
   String ADVINST_TOOL_NAME = "advancedinstaller";
+  String ADVINST_TOOL_PATH = "advancedinstaller.tool";
 
-  String ADVINST_TOOL_DEFAULT_VERSION = "advancedinstaller..default.version";
+  String ADVINST_TOOL_DEFAULT_VERSION = "advancedinstaller.default.version";
   String ADVINST_TOOL_VERSIONS_HISTORY_URL = "https://www.advancedinstaller.com/version-history.html";
   String ADVINST_TOOL_EXTRACT_CMD = "msiexec /a \"%1$s\" TARGETDIR=\"%2$s\" /qn";
   String ADVINST_TOOL_REGISTER_CMD = "\"%1$s\" /RegisterCI %2$s";
   String ADVINST_TOOL_REGISTER_COM = "\"%1$s\" /REGSERVER";
+  String ADVINST_TOOL_UNREGISTER_COM = "\"%1$s\" /UNREGSERVER";
 }
  

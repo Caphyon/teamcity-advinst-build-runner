@@ -16,6 +16,16 @@ public final class AdvinstConstantsBean {
   }
 
   @NotNull
+  public String getAdvinstEnablePowershell(){
+    return AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL;
+  }
+
+  @NotNull
+  public String getAdvinstRunType(){
+    return AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE;
+  }
+
+  @NotNull
   public String getAdvinstRoot() {
     return AdvinstConstants.SETTINGS_ADVINST_ROOT;
   }
@@ -54,5 +64,4 @@ public final class AdvinstConstantsBean {
   public String getAdvinstToolLocation() {
     return "server";
   }
-
 }

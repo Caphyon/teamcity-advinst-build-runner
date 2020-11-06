@@ -15,6 +15,11 @@
 </div>
 
 <div class="parameter">
+  Enable PowerShell support: <strong>
+    <props:displayValue name="${constants.advinstEnablePowershell}" emptyValue="not specified" /></strong>
+</div>
+
+<div class="parameter">
   Advanced Installer project path: <strong>
     <props:displayValue name="${constants.aipPath}" emptyValue="not specified" /></strong>
 </div>
