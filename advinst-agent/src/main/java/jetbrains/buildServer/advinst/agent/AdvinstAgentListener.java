@@ -1,36 +1,35 @@
 package jetbrains.buildServer.advinst.agent;
 
-import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import jetbrains.buildServer.agent.AgentLifeCycleAdapter;
 import jetbrains.buildServer.agent.AgentLifeCycleListener;
-import jetbrains.buildServer.agent.BuildAgent;
-import jetbrains.buildServer.agent.BuildAgentConfiguration;
+import jetbrains.buildServer.agent.AgentRunningBuild;
+import jetbrains.buildServer.agent.BuildFinishedStatus;
+import jetbrains.buildServer.agent.BuildRunnerContext;
 import jetbrains.buildServer.util.EventDispatcher;
-import jetbrains.buildServer.util.positioning.PositionAware;
-import jetbrains.buildServer.util.positioning.PositionConstraint;
 import org.jetbrains.annotations.NotNull;
 
+public class AdvinstAgentListener extends AgentLifeCycleAdapter {
 
-public class AdvinstAgentListener extends AgentLifeCycleAdapter implements PositionAware {
+  BuildRunnerContext runnerContext = null;
 
-  BuildAgentConfiguration mAgentConfiguration;
-
-  public AdvinstAgentListener(@NotNull final BuildAgentConfiguration agentConfiguration, @NotNull final EventDispatcher<AgentLifeCycleListener> events) {
-    this.mAgentConfiguration = agentConfiguration;
-    events.addListener(this);
+  public AdvinstAgentListener(@NotNull final EventDispatcher<AgentLifeCycleListener> eventDispatcher) {
+    eventDispatcher.addListener(this);
   }
 
-  @NotNull
-  public String getOrderId() {
-    return AdvinstConstants.RUNNER_TYPE;
-  }
-
-  @NotNull
-  public PositionConstraint getConstraint() {
-    return PositionConstraint.last();
+  public void beforeRunnerStart(@NotNull final BuildRunnerContext runner) {
+    super.beforeRunnerStart(runner);
+    runnerContext = runner;
   }
 
   @Override
-  public void agentInitialized(@NotNull final BuildAgent agent) {
+  public void beforeBuildFinish(@NotNull final AgentRunningBuild build,
+      @NotNull final BuildFinishedStatus buildStatus) {
+    super.beforeBuildFinish(build, buildStatus);
+    try {
+      AdvinstTool tool = new AdvinstTool(runnerContext);
+      tool.unregisterCOM();
+    } catch (Exception e) {
+      build.getBuildLogger().error(e.getMessage());
+    }
   }
 }

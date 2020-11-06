@@ -70,7 +70,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
       @NotNull
       @Override
       public String getExecutablePath() throws RunBuildException {
-        return mAdvinstTool.getPath();
+        return getToolPath();
       }
 
       @NotNull
@@ -82,7 +82,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
       @NotNull
       @Override
       public List<String> getArguments() throws RunBuildException {
-        return getAdvinstArguments();
+        return getToolArguments();
       }
 
       @NotNull
@@ -93,8 +93,28 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
     };
   }
 
+  public List<String> getToolArguments() throws RunBuildException {
+    List<String> arguments = new ArrayList<String>();
+    final String runMode = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE);
+    if (runMode.equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY)) {
+      arguments.add("/c");
+      arguments.add("echo Advanced Installer tool deployed");
+      return arguments;
+    }
+    return getAdvinstArguments();
+  }
+
+  public String getToolPath() {
+    final String runMode = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE);
+    if (runMode.equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY)) {
+      return "cmd.exe";
+    }
+    return mAdvinstTool.getPath();
+  }
+
   @NotNull
   public List<String> getAdvinstArguments() throws RunBuildException {
+
     List<String> arguments = new ArrayList<String>();
     List<String> commands = new ArrayList<String>();
     arguments.add("/execute");
