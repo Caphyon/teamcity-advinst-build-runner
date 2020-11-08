@@ -23,10 +23,10 @@ public final class AdvinstTool {
   private final boolean enablePws;
   private static final String UNPACK_FOLDER = ".unpacked";
   private static final String ADVINST_SUBPATH = "bin\\x86\\AdvancedInstaller.com";
-  private BuildRunnerContext runnerContext;
+  private BuildRunnerContext runner;
 
   public AdvinstTool(BuildRunnerContext runner) {
-    runnerContext = runner;
+    this.runner = runner;
     rootFolder = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
     licenseId = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_LICENSE);
     enablePws = runner.getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL) && runner
@@ -52,8 +52,6 @@ public final class AdvinstTool {
       // Verify the tool actually exists after unpack
       if (Files.notExists(Paths.get(advinstToolPath)))
         throw new FileNotFoundException("Failed to locate Advanced Installer tool " + advinstToolPath);
-
-      runnerContext.addConfigParameter(AdvinstConstants.ADVINST_TOOL_PATH, advinstToolPath);
 
       // Register
       if (!StringUtil.isEmpty(licenseId)) {
@@ -87,15 +85,14 @@ public final class AdvinstTool {
 
   public final void unregisterCOM() throws AdvinstException {
     try {
-      final String advinstToolPath = runnerContext.getRunnerParameters().get(AdvinstConstants.ADVINST_TOOL_PATH);
-      // Enable PowerShell support
-      if (enablePws) {
-        final String disablePswCmd = String.format(AdvinstConstants.ADVINST_TOOL_UNREGISTER_COM, advinstToolPath);
-        int ret = Runtime.getRuntime().exec(disablePswCmd).waitFor();
-        if (0 != ret)
-          throw new Exception("Failed to disable PowerShell support for Advanced Installer tool");
-      }
-    } catch (Exception e) {
+      final String advinstToolPath = this.runner.getConfigParameters().get(AdvinstConstants.ADVINST_TOOL_PATH);
+      final String disablePswCmd = String.format(AdvinstConstants.ADVINST_TOOL_UNREGISTER_COM, advinstToolPath);
+      int ret = Runtime.getRuntime().exec(disablePswCmd).waitFor();
+      if (0 != ret)
+        throw new Exception("Failed to disable PowerShell support for Advanced Installer tool");
+    } catch (
+
+    Exception e) {
       throw new AdvinstException(
           "Failed to cleanup Advanved Installer tool from agent " + agentName + ". Error: " + e.getMessage(), e);
     }

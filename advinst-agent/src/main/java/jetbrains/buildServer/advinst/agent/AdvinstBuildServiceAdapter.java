@@ -33,6 +33,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
   public void afterInitialized() throws RunBuildException {
     super.afterInitialized();
     mAdvinstTool = new AdvinstTool(getRunnerContext());
+    getBuild().addSharedConfigParameter(AdvinstConstants.ADVINST_TOOL_PATH, mAdvinstTool.getPath());
   }
 
   @Override

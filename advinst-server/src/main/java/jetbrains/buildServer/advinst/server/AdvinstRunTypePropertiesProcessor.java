@@ -1,7 +1,6 @@
 package jetbrains.buildServer.advinst.server;
 
 import java.util.*;
-import java.nio.file.*;
 
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import jetbrains.buildServer.serverSide.InvalidProperty;
@@ -13,15 +12,15 @@ public class AdvinstRunTypePropertiesProcessor implements PropertiesProcessor {
   public Collection<InvalidProperty> process(Map<String, String> properties) {
     List<InvalidProperty> result = new ArrayList<InvalidProperty>();
 
+    final String advinstRoot = properties.get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
+    if (PropertiesUtil.isEmptyOrNull(advinstRoot)) {
+      result.add(new InvalidProperty(AdvinstConstants.SETTINGS_ADVINST_ROOT,
+          "Advanced Installer tool must be specified."));
+    }
+
     final String advinstRunMode = properties.get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE);
     if (advinstRunMode.equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY))
       return result;
-
-    final Path advinstRoot = Paths.get(properties.get(AdvinstConstants.SETTINGS_ADVINST_ROOT));
-    if (PropertiesUtil.isEmptyOrNull(advinstRoot.toString())) {
-      result.add(new InvalidProperty(AdvinstConstants.SETTINGS_ADVINST_ROOT,
-          "Advanced Installer installation root must be specified."));
-    }
 
     final String advinstAipPath = properties.get(AdvinstConstants.SETTINGS_ADVINST_AIP_PATH);
     if (PropertiesUtil.isEmptyOrNull(advinstAipPath)) {
