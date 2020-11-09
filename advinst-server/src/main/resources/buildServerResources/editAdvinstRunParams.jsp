@@ -41,8 +41,8 @@
       };
     </script>
     <props:selectProperty name="${constants.advinstRunType}" onchange="advinstRunTypeChanged()" className="longField">
-      <props:option value="deploy" selected="${advintRunTypeDeploy}">Deploy Advanced Installer</props:option>
-      <props:option value="build" selected="${not advintRunTypeDeploy}">Deploy Advanced Installer and build project
+      <props:option value="deploy" selected="${advintRunTypeDeploy}">Deploy Advanced Installer tool</props:option>
+      <props:option value="build" selected="${not advintRunTypeDeploy}">Deploy Advanced Installer tool and build project
       </props:option>
     </props:selectProperty>
   </td>
