@@ -81,7 +81,7 @@
 
 </l:settingsGroup>
 
-<%-- This is a clone of a settingsGroup because it does accept style or id id params --%>
+<%-- This is a clone of a settingsGroup because it does not accept style or id id params --%>
 <tr id="advinstAipGroup" class="groupingTitle" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
   <td colspan="2">Advanced Installer Project</td>
 </tr>
