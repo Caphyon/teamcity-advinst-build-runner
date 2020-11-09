@@ -20,6 +20,7 @@
       advinstRunTypeChanged = function () {
         var runType = $('<%=constants.getAdvinstRunType()%>').value;
         if (runType == 'deploy') {
+          BS.Util.hide('advinstAipGroup');
           BS.Util.hide('advinstAipPathSection');
           BS.Util.hide('advinstAipBuildSection');
           BS.Util.hide('advinstAipSetupFileSection');
@@ -27,6 +28,7 @@
           BS.Util.hide('advinstAipCommandsSection');
           BS.Util.hide('advinstAipSignSection');
         } else {
+          BS.Util.show('advinstAipGroup');
           BS.Util.show('advinstAipPathSection');
           BS.Util.show('advinstAipBuildSection');
           BS.Util.show('advinstAipSetupFileSection');
@@ -79,61 +81,63 @@
 
 </l:settingsGroup>
 
-<l:settingsGroup title="Advanced Installer Project">
+<%-- This is a clone of a settingsGroup because it does accept style or id id params --%>
+<tr id="advinstAipGroup" class="groupingTitle" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+  <td colspan="2">Advanced Installer Project</td>
+</tr>
 
-  <tr id="advinstAipPathSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipPath}">AIP path:<l:star /></label></th>
-    <td>
-      <props:textProperty name="${constants.aipPath}" className="longField" />
-      <span class="error" id="error_${constants.aipPath}"></span>
-      <span class="smallNote">Advanced Installer project file. It can be an absolute path or relative to the checkout
-        root</span>
-    </td>
-  </tr>
+<tr id="advinstAipPathSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+  <th><label for="${constants.aipPath}">AIP path:
+      <l:star /></label></th>
+  <td>
+    <props:textProperty name="${constants.aipPath}" className="longField" />
+    <span class="error" id="error_${constants.aipPath}"></span>
+    <span class="smallNote">Advanced Installer project file. It can be an absolute path or relative to the checkout
+      root</span>
+  </td>
+</tr>
 
-  <tr id="advinstAipBuildSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipBuild}">AIP build:</label></th>
-    <td>
-      <props:textProperty name="${constants.aipBuild}" className="longField" />
-      <span class="error" id="error_${constants.aipBuild}"></span>
-    </td>
-  </tr>
+<tr id="advinstAipBuildSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+  <th><label for="${constants.aipBuild}">AIP build:</label></th>
+  <td>
+    <props:textProperty name="${constants.aipBuild}" className="longField" />
+    <span class="error" id="error_${constants.aipBuild}"></span>
+  </td>
+</tr>
 
-  <tr id="advinstAipSetupFileSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipSetupFile}">Output file:</label></th>
-    <td>
-      <props:textProperty name="${constants.aipSetupFile}" className="longField" />
-      <span class="error" id="error_${constants.aipSetupFile}"></span>
-    </td>
-  </tr>
+<tr id="advinstAipSetupFileSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+  <th><label for="${constants.aipSetupFile}">Output file:</label></th>
+  <td>
+    <props:textProperty name="${constants.aipSetupFile}" className="longField" />
+    <span class="error" id="error_${constants.aipSetupFile}"></span>
+  </td>
+</tr>
 
-  <tr id="advinstAipSetupFolderSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipSetupFolder}">Output folder:</label></th>
-    <td>
-      <props:textProperty name="${constants.aipSetupFolder}" className="longField" />
-      <span class="error" id="error_${constants.aipSetupFolder}"></span>
-      <span class="smallNote">Project output folder. It can be an absolute path or relative to the checkout root</span>
-    </td>
-  </tr>
+<tr id="advinstAipSetupFolderSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+  <th><label for="${constants.aipSetupFolder}">Output folder:</label></th>
+  <td>
+    <props:textProperty name="${constants.aipSetupFolder}" className="longField" />
+    <span class="error" id="error_${constants.aipSetupFolder}"></span>
+    <span class="smallNote">Project output folder. It can be an absolute path or relative to the checkout root</span>
+  </td>
+</tr>
 
-  <tr id="advinstAipCommandsSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipExtraCommands}">Commands:</label></th>
-    <td>
-      <props:multilineProperty name="${constants.aipExtraCommands}" className="longField" linkTitle="" cols="55"
-        rows="5" expanded="true" />
-      <span class="error" id="error_${constants.aipExtraCommands}"></span>
-      <span class="smallNote">Advanced Installer edit commands that will be executed against the specified aip
-        file.<br />
-        Example: SetVersion x.x.x</span>
-    </td>
-  </tr>
+<tr id="advinstAipCommandsSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+  <th><label for="${constants.aipExtraCommands}">Commands:</label></th>
+  <td>
+    <props:multilineProperty name="${constants.aipExtraCommands}" className="longField" linkTitle="" cols="55" rows="5"
+      expanded="true" />
+    <span class="error" id="error_${constants.aipExtraCommands}"></span>
+    <span class="smallNote">Advanced Installer edit commands that will be executed against the specified aip
+      file.<br />
+      Example: SetVersion x.x.x</span>
+  </td>
+</tr>
 
-  <tr id="advinstAipSignSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipDoNotSign}">Do not digitally sign package</label></th>
-    <td>
-      <props:checkboxProperty name="${constants.aipDoNotSign}" />
-      <span class="error" id="error_${constants.aipDoNotSign}"></span>
-    </td>
-  </tr>
-
-</l:settingsGroup>
+<tr id="advinstAipSignSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+  <th><label for="${constants.aipDoNotSign}">Do not digitally sign package</label></th>
+  <td>
+    <props:checkboxProperty name="${constants.aipDoNotSign}" />
+    <span class="error" id="error_${constants.aipDoNotSign}"></span>
+  </td>
+</tr>
