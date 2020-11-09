@@ -37,6 +37,7 @@
           BS.Util.show('advinstAipSignSection');
         }
         BS.VisibilityHandlers.updateVisibility('mainContent');
+        BS.MultilineProperties.updateVisible();
       };
     </script>
     <props:selectProperty name="${constants.advinstRunType}" onchange="advinstRunTypeChanged()" className="longField">
