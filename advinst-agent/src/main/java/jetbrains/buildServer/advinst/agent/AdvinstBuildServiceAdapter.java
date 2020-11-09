@@ -34,6 +34,9 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
     super.afterInitialized();
     mAdvinstTool = new AdvinstTool(getRunnerContext());
     getBuild().addSharedConfigParameter(AdvinstConstants.ADVINST_TOOL_PATH, mAdvinstTool.getPath());
+    getBuild().addSharedConfigParameter(AdvinstConstants.ADVINST_TOOL_CLEANUP,
+        String.valueOf(mAdvinstTool.needsCleanup()));
+
   }
 
   @Override
@@ -94,10 +97,10 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
     };
   }
 
-  public List<String> getToolArguments() throws RunBuildException {
+  @NotNull
+  public final List<String> getToolArguments() throws RunBuildException {
     List<String> arguments = new ArrayList<String>();
-    final String runMode = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE);
-    if (runMode.equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY)) {
+    if (isDeployMode()) {
       arguments.add("/c");
       arguments.add("echo Advanced Installer tool deployed");
       return arguments;
@@ -105,16 +108,22 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
     return getAdvinstArguments();
   }
 
-  public String getToolPath() {
-    final String runMode = getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE);
-    if (runMode.equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY)) {
+  @NotNull
+  public final String getToolPath() {
+    if (isDeployMode()) {
       return "cmd.exe";
     }
     return mAdvinstTool.getPath();
   }
 
   @NotNull
-  public List<String> getAdvinstArguments() throws RunBuildException {
+  private boolean isDeployMode() {
+    return getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE) && getRunnerParameters()
+        .get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE).equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY);
+  }
+
+  @NotNull
+  private List<String> getAdvinstArguments() throws RunBuildException {
 
     List<String> arguments = new ArrayList<String>();
     List<String> commands = new ArrayList<String>();

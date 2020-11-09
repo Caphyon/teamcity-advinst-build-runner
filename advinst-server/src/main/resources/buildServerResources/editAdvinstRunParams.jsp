@@ -7,8 +7,8 @@
 <jsp:useBean id="propertiesBean" scope="request" type="jetbrains.buildServer.controllers.BasePropertiesBean" />
 <jsp:useBean id="constants" class="jetbrains.buildServer.advinst.server.AdvinstConstantsBean" />
 
-<c:set var="advintRunTypeDeploy" value="${propertiesBean.properties[constants.advinstRunType] eq 'deploy' or 
-            empty propertiesBean.properties[constants.aipPath]}" />
+<c:set var="advintRunTypeDeploy"
+  value="${not empty propertiesBean.properties[constants.advinstRunType] && propertiesBean.properties[constants.advinstRunType] eq 'deploy'}" />
 
 <tr>
   <th>
@@ -135,7 +135,7 @@
   </td>
 </tr>
 
-<tr id="advinstAipSignSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
+<tr id="advinstAipSignSection" class="advancedSetting" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
   <th><label for="${constants.aipDoNotSign}">Do not digitally sign package</label></th>
   <td>
     <props:checkboxProperty name="${constants.aipDoNotSign}" />

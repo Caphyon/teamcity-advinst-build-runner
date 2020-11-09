@@ -14,12 +14,12 @@ public class AdvinstRunTypePropertiesProcessor implements PropertiesProcessor {
 
     final String advinstRoot = properties.get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
     if (PropertiesUtil.isEmptyOrNull(advinstRoot)) {
-      result.add(new InvalidProperty(AdvinstConstants.SETTINGS_ADVINST_ROOT,
-          "Advanced Installer tool must be specified."));
+      result.add(
+          new InvalidProperty(AdvinstConstants.SETTINGS_ADVINST_ROOT, "Advanced Installer tool must be specified."));
     }
 
-    final String advinstRunMode = properties.get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE);
-    if (advinstRunMode.equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY))
+    if (properties.containsKey(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE)
+        && properties.get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE).equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY))
       return result;
 
     final String advinstAipPath = properties.get(AdvinstConstants.SETTINGS_ADVINST_AIP_PATH);
