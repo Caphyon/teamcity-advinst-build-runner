@@ -2,6 +2,14 @@
 
 Changelog of Advanced Installer plugin for TeamCity.
 
+### Advanced Installer TeamCity Plugin  1.3
+
+Features:
+* The plugin now supports two execution senarios:
+  * Deploy Advanced Installer tool
+  * Deploy Advanced Installer tool and build project
+* Added "Enable PowerShell support" option.
+
 ### Advanced Installer TeamCity Plugin  1.2
 
 __*The minimum required TeamCity version is now 2017.1.*__
