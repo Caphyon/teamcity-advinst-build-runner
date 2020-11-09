@@ -7,11 +7,13 @@
 <jsp:useBean id="propertiesBean" scope="request" type="jetbrains.buildServer.controllers.BasePropertiesBean" />
 <jsp:useBean id="constants" class="jetbrains.buildServer.advinst.server.AdvinstConstantsBean" />
 
-<c:set var="advintRunTypeDeploy" value="${empty propertiesBean.properties['constants.aipPath']}" />
+<c:set var="advintRunTypeDeploy" value="${propertiesBean.properties[constants.advinstRunType] eq 'deploy' or 
+            empty propertiesBean.properties[constants.aipPath]}" />
 
 <tr>
   <th>
-    <label for="${constants.advinstRunType}">Run Type: <l:star /></label>
+    <label for="${constants.advinstRunType}">Run Type:
+      <l:star /></label>
   </th>
   <td>
     <script type="text/javascript">
@@ -80,8 +82,7 @@
 <l:settingsGroup title="Advanced Installer Project">
 
   <tr id="advinstAipPathSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipPath}">AIP path:
-        <l:star /></label></th>
+    <th><label for="${constants.aipPath}">AIP path:<l:star /></label></th>
     <td>
       <props:textProperty name="${constants.aipPath}" className="longField" />
       <span class="error" id="error_${constants.aipPath}"></span>
@@ -91,7 +92,7 @@
   </tr>
 
   <tr id="advinstAipBuildSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipBuild}">AIP build: </label></th>
+    <th><label for="${constants.aipBuild}">AIP build:</label></th>
     <td>
       <props:textProperty name="${constants.aipBuild}" className="longField" />
       <span class="error" id="error_${constants.aipBuild}"></span>
@@ -99,7 +100,7 @@
   </tr>
 
   <tr id="advinstAipSetupFileSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipSetupFile}">Output file: </label></th>
+    <th><label for="${constants.aipSetupFile}">Output file:</label></th>
     <td>
       <props:textProperty name="${constants.aipSetupFile}" className="longField" />
       <span class="error" id="error_${constants.aipSetupFile}"></span>
@@ -107,7 +108,7 @@
   </tr>
 
   <tr id="advinstAipSetupFolderSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipSetupFolder}">Output folder: </label></th>
+    <th><label for="${constants.aipSetupFolder}">Output folder:</label></th>
     <td>
       <props:textProperty name="${constants.aipSetupFolder}" className="longField" />
       <span class="error" id="error_${constants.aipSetupFolder}"></span>
@@ -116,7 +117,7 @@
   </tr>
 
   <tr id="advinstAipCommandsSection" style="${advintRunTypeDeploy ? 'display:none;' : ''}">
-    <th><label for="${constants.aipExtraCommands}">Commands: </label></th>
+    <th><label for="${constants.aipExtraCommands}">Commands:</label></th>
     <td>
       <props:multilineProperty name="${constants.aipExtraCommands}" className="longField" linkTitle="" cols="55"
         rows="5" expanded="true" />
