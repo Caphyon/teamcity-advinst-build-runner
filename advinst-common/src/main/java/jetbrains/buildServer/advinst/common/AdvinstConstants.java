@@ -28,6 +28,7 @@ public interface AdvinstConstants {
   String ADVINST_TOOL_DISPLAY_NAME = "Advanced Installer";
   String ADVINST_TOOL_NAME = "advancedinstaller";
   String ADVINST_TOOL_PATH = "advancedinstaller.tool";
+  String ADVINST_TOOL_CLEANUP = "advancedinstaller.tool.cleanup";
 
   String ADVINST_TOOL_DEFAULT_VERSION = "advancedinstaller.default.version";
   String ADVINST_TOOL_VERSIONS_HISTORY_URL = "https://www.advancedinstaller.com/version-history.html";
@@ -36,4 +37,3 @@ public interface AdvinstConstants {
   String ADVINST_TOOL_REGISTER_COM = "\"%1$s\" /REGSERVER";
   String ADVINST_TOOL_UNREGISTER_COM = "\"%1$s\" /UNREGSERVER";
 }
- 

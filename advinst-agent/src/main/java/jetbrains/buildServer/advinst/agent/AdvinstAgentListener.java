@@ -27,7 +27,7 @@ public class AdvinstAgentListener extends AgentLifeCycleAdapter {
     super.beforeBuildFinish(build, buildStatus);
     try {
       AdvinstTool tool = new AdvinstTool(runnerContext);
-      tool.unregisterCOM();
+      tool.cleanup();
     } catch (Exception e) {
       build.getBuildLogger().error(e.getMessage());
     }
