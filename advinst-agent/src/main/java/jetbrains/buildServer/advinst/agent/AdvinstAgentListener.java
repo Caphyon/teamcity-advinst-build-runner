@@ -26,10 +26,11 @@ public class AdvinstAgentListener extends AgentLifeCycleAdapter {
       @NotNull final BuildFinishedStatus buildStatus) {
     super.beforeBuildFinish(build, buildStatus);
     try {
+      build.getBuildLogger().message("Advanced Installer tool cleanup");
       AdvinstTool tool = new AdvinstTool(runnerContext);
       tool.cleanup();
     } catch (Exception e) {
-      build.getBuildLogger().error(e.getMessage());
+      build.getBuildLogger().warning(e.getMessage());
     }
   }
 }
