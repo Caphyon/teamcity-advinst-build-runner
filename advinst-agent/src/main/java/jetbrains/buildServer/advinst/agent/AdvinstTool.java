@@ -20,12 +20,18 @@ public final class AdvinstTool {
   private final String licenseId;
   private final String agentToolsDir;
   private final String agentName;
+  private final boolean enablePws;
   private static final String UNPACK_FOLDER = ".unpacked";
   private static final String ADVINST_SUBPATH = "bin\\x86\\AdvancedInstaller.com";
+  private BuildRunnerContext runner;
 
   public AdvinstTool(BuildRunnerContext runner) {
+    this.runner = runner;
     rootFolder = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ROOT);
     licenseId = runner.getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_LICENSE);
+    enablePws = runner.getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL) && runner
+        .getRunnerParameters().get(AdvinstConstants.SETTINGS_ADVINST_ENABLE_POWERSHELL).equals(Boolean.TRUE.toString());
+
     agentToolsDir = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_TOOLS);
     agentName = runner.getConfigParameters().get(AgentRuntimeProperties.TEAMCITY_AGENT_NAME);
   }
@@ -49,10 +55,19 @@ public final class AdvinstTool {
 
       // Register
       if (!StringUtil.isEmpty(licenseId)) {
-        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, advinstToolPath, licenseId);
+        final String registerCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_CMD, advinstToolPath,
+            licenseId);
         int ret = Runtime.getRuntime().exec(registerCmd).waitFor();
         if (0 != ret)
           throw new Exception("Failed to register Advanced Installer tool");
+      }
+
+      // Enable PowerShell support
+      if (enablePws) {
+        final String enablePswCmd = String.format(AdvinstConstants.ADVINST_TOOL_REGISTER_COM, advinstToolPath);
+        int ret = Runtime.getRuntime().exec(enablePswCmd).waitFor();
+        if (0 != ret)
+          throw new Exception("Failed to enable PowerShell support for Advanced Installer tool");
       }
 
     } catch (Exception e) {
@@ -66,6 +81,29 @@ public final class AdvinstTool {
       return Paths.get(rootFolder, UNPACK_FOLDER, ADVINST_SUBPATH).toString(); //
     else
       return Paths.get(rootFolder, ADVINST_SUBPATH).toString(); // Custom root dir
+  }
+
+  public final void cleanup() throws AdvinstException {
+    try {
+      final String advinstToolPath = this.runner.getConfigParameters().get(AdvinstConstants.ADVINST_TOOL_PATH);
+      final boolean needsCleanup = runner.getConfigParameters().containsKey(AdvinstConstants.ADVINST_TOOL_CLEANUP)
+          && runner.getConfigParameters().get(AdvinstConstants.ADVINST_TOOL_CLEANUP).equals(Boolean.TRUE.toString());
+
+      if (needsCleanup) {
+        final String disablePswCmd = String.format(AdvinstConstants.ADVINST_TOOL_UNREGISTER_COM, advinstToolPath);
+        int ret = Runtime.getRuntime().exec(disablePswCmd).waitFor();
+        if (0 != ret)
+          throw new Exception("Failed to disable PowerShell support for Advanced Installer tool.");
+      }
+
+    } catch (Exception e) {
+      throw new AdvinstException(
+          "Failed to cleanup Advanved Installer tool from agent " + agentName + ". Error: " + e.getMessage(), e);
+    }
+  }
+
+  public final boolean needsCleanup() {
+    return enablePws;
   }
 
   private File getMsiFile() throws FileNotFoundException {

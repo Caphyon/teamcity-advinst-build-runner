@@ -33,6 +33,10 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
   public void afterInitialized() throws RunBuildException {
     super.afterInitialized();
     mAdvinstTool = new AdvinstTool(getRunnerContext());
+    getBuild().addSharedConfigParameter(AdvinstConstants.ADVINST_TOOL_PATH, mAdvinstTool.getPath());
+    getBuild().addSharedConfigParameter(AdvinstConstants.ADVINST_TOOL_CLEANUP,
+        String.valueOf(mAdvinstTool.needsCleanup()));
+
   }
 
   @Override
@@ -70,7 +74,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
       @NotNull
       @Override
       public String getExecutablePath() throws RunBuildException {
-        return mAdvinstTool.getPath();
+        return getToolPath();
       }
 
       @NotNull
@@ -82,7 +86,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
       @NotNull
       @Override
       public List<String> getArguments() throws RunBuildException {
-        return getAdvinstArguments();
+        return getToolArguments();
       }
 
       @NotNull
@@ -94,7 +98,33 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
   }
 
   @NotNull
-  public List<String> getAdvinstArguments() throws RunBuildException {
+  public final List<String> getToolArguments() throws RunBuildException {
+    List<String> arguments = new ArrayList<String>();
+    if (isDeployMode()) {
+      arguments.add("/c");
+      arguments.add("echo Advanced Installer tool deployed");
+      return arguments;
+    }
+    return getAdvinstArguments();
+  }
+
+  @NotNull
+  public final String getToolPath() {
+    if (isDeployMode()) {
+      return "cmd.exe";
+    }
+    return mAdvinstTool.getPath();
+  }
+
+  @NotNull
+  private boolean isDeployMode() {
+    return getRunnerParameters().containsKey(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE) && getRunnerParameters()
+        .get(AdvinstConstants.SETTINGS_ADVINST_RUN_TYPE).equals(AdvinstConstants.ADVINST_RUN_TYPE_DEPLOY);
+  }
+
+  @NotNull
+  private List<String> getAdvinstArguments() throws RunBuildException {
+
     List<String> arguments = new ArrayList<String>();
     List<String> commands = new ArrayList<String>();
     arguments.add("/execute");
