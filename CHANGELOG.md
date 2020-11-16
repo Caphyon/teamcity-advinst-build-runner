@@ -8,7 +8,9 @@ Features:
 * The plugin now supports two execution senarios:
   * Deploy Advanced Installer tool
   * Deploy Advanced Installer tool and build project
-* Added "Enable PowerShell support" option.
+* Added **Enable PowerShell support** option. 
+
+__*PowerShell support* requires the build agent to run with elevated privileges.__
 
 ### Advanced Installer TeamCity Plugin  1.2
 
