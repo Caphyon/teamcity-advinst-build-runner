@@ -23,6 +23,8 @@ public final class AdvinstTool {
   private final boolean enablePws;
   private static final String UNPACK_FOLDER = ".unpacked";
   private static final String ADVINST_SUBPATH = "bin\\x86\\AdvancedInstaller.com";
+  private static final String ADVINST_MSBUILD_TARGETS_SUBPATH = "ProgramFilesFolder\\MSBuild\\Caphyon\\Advanced Installer";
+
   private BuildRunnerContext runner;
 
   public AdvinstTool(BuildRunnerContext runner) {
@@ -69,6 +71,13 @@ public final class AdvinstTool {
         if (0 != ret)
           throw new Exception("Failed to enable PowerShell support for Advanced Installer tool");
       }
+
+      // Set the environment variables that will be used by Advanced Installer tasks
+      // later on.
+      this.runner.getBuild().addSharedEnvironmentVariable(AdvinstConstants.ADVINST_TOOL_ROOT_VAR,
+          Paths.get(rootFolder, UNPACK_FOLDER).toString());
+      this.runner.getBuild().addSharedEnvironmentVariable(AdvinstConstants.ADVINST_MSBUILD_TARGETS_VAR,
+          Paths.get(rootFolder, UNPACK_FOLDER, ADVINST_MSBUILD_TARGETS_SUBPATH).toString());
 
     } catch (Exception e) {
       throw new AdvinstException(

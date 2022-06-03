@@ -36,4 +36,7 @@ public interface AdvinstConstants {
   String ADVINST_TOOL_REGISTER_CMD = "\"%1$s\" /RegisterCI %2$s";
   String ADVINST_TOOL_REGISTER_COM = "\"%1$s\" /REGSERVER";
   String ADVINST_TOOL_UNREGISTER_COM = "\"%1$s\" /UNREGSERVER";
+
+  String ADVINST_MSBUILD_TARGETS_VAR = "AdvancedInstallerMSBuildTargets";
+  String ADVINST_TOOL_ROOT_VAR = "AdvancedInstallerRoot";
 }
