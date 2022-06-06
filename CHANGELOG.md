@@ -5,10 +5,15 @@ Changelog of Advanced Installer plugin for TeamCity.
 ### Advanced Installer TeamCity Plugin  1.3
 
 Features:
-* The plugin now supports two execution senarios:
+* Add support for building [.AIPROJ](https://www.advancedinstaller.com/user-guide/ai-ext-vs-project.html) files
+
+### Advanced Installer TeamCity Plugin  1.3
+
+Features:
+* The plugin now supports two execution scenarios:
   * Deploy Advanced Installer tool
   * Deploy Advanced Installer tool and build project
-* Added **Enable PowerShell support** option. 
+* Added **Enable PowerShell support** option.
 
 __*PowerShell support* requires the build agent to run with elevated privileges.__
 
