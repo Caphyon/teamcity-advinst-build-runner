@@ -39,4 +39,6 @@ public interface AdvinstConstants {
 
   String ADVINST_MSBUILD_TARGETS_VAR = "AdvancedInstallerMSBuildTargets";
   String ADVINST_TOOL_ROOT_VAR = "AdvancedInstallerRoot";
+
+  int RELEASE_INTERVAL_MONTHS = 24;
 }
