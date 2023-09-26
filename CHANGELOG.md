@@ -2,7 +2,13 @@
 
 Changelog of Advanced Installer plugin for TeamCity.
 
-### Advanced Installer TeamCity Plugin  1.3
+### Advanced Installer TeamCity Plugin  1.5
+
+Features:
+* Add better integration with newer Advanced Installer versions.
+* Add deprecation warning, if using an Advanced Installer version older than two years.
+
+### Advanced Installer TeamCity Plugin  1.4
 
 Features:
 * Add support for building [.AIPROJ](https://www.advancedinstaller.com/user-guide/ai-ext-vs-project.html) files
