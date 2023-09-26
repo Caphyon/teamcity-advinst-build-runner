@@ -5,13 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>advinst-teamcity-plugin-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.4</version>
+  <version>1.5</version>
   <name>TeamCity Advanced Installer Plugin Common</name>
 
   <parent>
     <artifactId>advinst-teamcity-plugin</artifactId>
     <groupId>caphyon.advinst.teamcity</groupId>
-    <version>1.4</version>
+    <version>1.5</version>
   </parent>
 
   <developers>
@@ -29,5 +29,15 @@
       <url>http://www.opensource.org/licenses/mit-license.php</url>
     </license>
   </licenses>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.ini4j</groupId>
+      <artifactId>ini4j</artifactId>
+      <version>0.5.4</version>
+    </dependency>
+
+  </dependencies>
 
 </project>

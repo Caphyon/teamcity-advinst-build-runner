@@ -36,7 +36,12 @@ public interface AdvinstConstants {
   String ADVINST_TOOL_REGISTER_CMD = "\"%1$s\" /RegisterCI %2$s";
   String ADVINST_TOOL_REGISTER_COM = "\"%1$s\" /REGSERVER";
   String ADVINST_TOOL_UNREGISTER_COM = "\"%1$s\" /UNREGSERVER";
+  String ADVINST_TOOL_HELP_CMD = "\"%1$s\" /help";
 
   String ADVINST_MSBUILD_TARGETS_VAR = "AdvancedInstallerMSBuildTargets";
   String ADVINST_TOOL_ROOT_VAR = "AdvancedInstallerRoot";
+
+  int RELEASE_INTERVAL_MONTHS = 24;
+
+  String ADVINST_TOOL_DEPRECATION_WARNING = "We want to provide the best experience for you and support the newest Advanced Installer features. To do so, we will no longer be supporting older versions of the software in the near future. Please note that the minimum required version is %s and the configured version is %s.";
 }
