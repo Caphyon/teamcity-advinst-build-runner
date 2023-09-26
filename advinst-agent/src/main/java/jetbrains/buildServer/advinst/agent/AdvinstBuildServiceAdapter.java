@@ -43,6 +43,7 @@ public class AdvinstBuildServiceAdapter extends BuildServiceAdapter {
   public void beforeProcessStarted() throws RunBuildException {
     try {
       mAdvinstTool.unpack();
+      mAdvinstTool.ckeckVersionDeprecation();
     } catch (AdvinstException e) {
       throw new RunBuildException(e.getMessage());
     }

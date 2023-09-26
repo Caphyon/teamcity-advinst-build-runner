@@ -2,14 +2,21 @@ package jetbrains.buildServer.advinst.agent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.io.IOUtils;
 
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.text.VersionComparatorUtil;
 
 import jetbrains.buildServer.advinst.common.AdvinstConstants;
 import jetbrains.buildServer.advinst.common.AdvinstException;
+import jetbrains.buildServer.advinst.common.AdvinstVersions;
 import jetbrains.buildServer.agent.AgentRuntimeProperties;
 import jetbrains.buildServer.agent.BuildRunnerContext;
 import jetbrains.buildServer.util.FileUtil;
@@ -81,7 +88,7 @@ public final class AdvinstTool {
 
     } catch (Exception e) {
       throw new AdvinstException(
-          "Failed to deploy Advanved Installer tool to agent " + agentName + ". Error: " + e.getMessage(), e);
+          "Failed to deploy Advanced Installer tool to agent " + agentName + ". Error: " + e.getMessage(), e);
     }
   }
 
@@ -125,5 +132,36 @@ public final class AdvinstTool {
 
   private Path getUnpackDir() {
     return Paths.get(rootFolder, UNPACK_FOLDER);
+  }
+
+  public void ckeckVersionDeprecation() {
+    try {
+      final String toolVersion = getVersion();
+      final String minAllowedVersion = AdvinstVersions.getMinimumAllowedVersion();
+      if (VersionComparatorUtil.compare(toolVersion, minAllowedVersion) < 0) {
+        runner.getBuild().getBuildLogger()
+            .warning(String.format(AdvinstConstants.ADVINST_TOOL_DEPRECATION_WARNING, minAllowedVersion, toolVersion));
+      }
+    } catch (AdvinstException e) {
+      return;
+    }
+  }
+
+  public String getVersion() throws AdvinstException {
+    try {
+      final String toolPath = getPath();
+      InputStream stream = Runtime.getRuntime().exec(String.format(AdvinstConstants.ADVINST_TOOL_HELP_CMD, toolPath))
+          .getInputStream();
+      final String line = IOUtils.toString(stream).split("\r\n", 1)[0];
+      final Pattern versionRegex = Pattern.compile("\\d+(\\.\\d+)+");
+      Matcher matcher = versionRegex.matcher(line);
+      if (!matcher.find()) {
+        throw new AdvinstException("", null);
+      }
+      return matcher.group(0);
+
+    } catch (Exception e) {
+      throw new AdvinstException("Failed to retrieve tool version", e);
+    }
   }
 }

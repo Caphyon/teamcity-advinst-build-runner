@@ -11,24 +11,17 @@ import java.util.stream.Collectors;
 public class AdvinstVersions {
 
   public static String getMinimumAllowedVersion() throws AdvinstException {
-    try {
-      final LocalDate minReleaseDate = LocalDate.now().minusMonths(AdvinstConstants.RELEASE_INTERVAL_MONTHS);
-      final URL updatesIniUrl = new URL("https://www.advancedinstaller.com/downloads/updates.ini");
-      Wini updatesIni = new Wini(updatesIniUrl);
-      Section r = updatesIni.values().stream().filter(s -> {
-        LocalDate rd = LocalDate.parse(s.get("ReleaseDate"), DateTimeFormatter.ofPattern("dd/mm/yyyy"));
-        return minReleaseDate.isAfter(rd);
-      }).findAny().orElse(null);
-      if (r == null) {
-        return "";
-      }
-      return r.get("ProductVersion");
-    } catch (Exception e) {
-      throw new AdvinstException(e.getMessage(), e);
-    }
+    List<Section> versions = getAllowedReleaseInfo();
+    if (versions.isEmpty())
+      return "";
+    return versions.get(versions.size() - 1).get("ProductVersion");
   }
 
   public static List<String> getAllowedVersions() throws AdvinstException {
+    return getAllowedReleaseInfo().stream().map(s -> s.get("ProductVersion")).collect(Collectors.toList());
+  }
+
+  private static List<Section> getAllowedReleaseInfo() throws AdvinstException {
     try {
       final LocalDate minReleaseDate = LocalDate.now().minusMonths(AdvinstConstants.RELEASE_INTERVAL_MONTHS);
       final URL updatesIniUrl = new URL("https://www.advancedinstaller.com/downloads/updates.ini");
@@ -36,9 +29,10 @@ public class AdvinstVersions {
       return updatesIni.values().stream().filter(s -> {
         LocalDate rd = LocalDate.parse(s.get("ReleaseDate"), DateTimeFormatter.ofPattern("dd/M/yyyy"));
         return minReleaseDate.isBefore(rd) || minReleaseDate.isEqual(rd);
-      }).map(s -> s.get("ProductVersion")).collect(Collectors.toList());
+      }).collect(Collectors.toList());
     } catch (Exception e) {
       throw new AdvinstException(e.getMessage(), e);
     }
+
   }
 }
