@@ -9,7 +9,7 @@
   <name>TeamCity Advanced Installer Plugin</name>
 
   <properties>
-    <teamcity-version>2017.1</teamcity-version>
+    <teamcity-version>2020.1</teamcity-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <plugin.version>${project.version}</plugin.version>
     <teamcity-dir>.teamcity/${teamcity-version}</teamcity-dir>

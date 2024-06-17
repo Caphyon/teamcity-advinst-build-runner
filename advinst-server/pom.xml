@@ -14,7 +14,7 @@
   </parent>
 
   <properties>
-    <teamcity-version>2017.1</teamcity-version>
+    <teamcity-version>2020.1</teamcity-version>
     <teamcity-dir>.teamcity/${teamcity-version}</teamcity-dir>
   </properties>
 
@@ -61,7 +61,7 @@
       <version>${teamcity-version}</version>
       <scope>provided</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
