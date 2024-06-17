@@ -2,6 +2,15 @@
 
 Changelog of Advanced Installer plugin for TeamCity.
 
+### Advanced Installer TeamCity Plugin  2.0
+
+New:
+* Add [Azure Trusted Sign](https://www.advancedinstaller.com/trusted-signing-integration.html) support.
+
+Changes:
+* The plugin now requires TeamCity version 2020.1 and newer.
+* Add deprecation error, if using an Advanced Installer version older than two years.
+
 ### Advanced Installer TeamCity Plugin  1.5
 
 Features:
