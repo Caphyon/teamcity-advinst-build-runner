@@ -43,5 +43,5 @@ public interface AdvinstConstants {
 
   int RELEASE_INTERVAL_MONTHS = 24;
 
-  String ADVINST_TOOL_DEPRECATION_WARNING = "We want to provide the best experience for you and support the newest Advanced Installer features. To do so, we will no longer be supporting older versions of the software in the near future. Please note that the minimum required version is %s and the configured version is %s.";
+  String ADVINST_TOOL_DEPRECATION_ERROR = "We want to provide the best experience for you and support the newest Advanced Installer features. To do so, we are no longer supporting older versions of the software. Please note that the minimum required version is %s and the configured version is %s.";
 }
