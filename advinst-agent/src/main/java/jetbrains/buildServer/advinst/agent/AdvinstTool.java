@@ -134,16 +134,11 @@ public final class AdvinstTool {
     return Paths.get(rootFolder, UNPACK_FOLDER);
   }
 
-  public void ckeckVersionDeprecation() {
-    try {
-      final String toolVersion = getVersion();
-      final String minAllowedVersion = AdvinstVersions.getMinimumAllowedVersion();
-      if (VersionComparatorUtil.compare(toolVersion, minAllowedVersion) < 0) {
-        runner.getBuild().getBuildLogger()
-            .warning(String.format(AdvinstConstants.ADVINST_TOOL_DEPRECATION_WARNING, minAllowedVersion, toolVersion));
-      }
-    } catch (AdvinstException e) {
-      return;
+  public void ckeckVersionDeprecation() throws AdvinstException {
+    final String toolVersion = getVersion();
+    final String minAllowedVersion = AdvinstVersions.getMinimumAllowedVersion();
+    if (VersionComparatorUtil.compare(toolVersion, minAllowedVersion) < 0) {
+      throw new AdvinstException(String.format(AdvinstConstants.ADVINST_TOOL_DEPRECATION_ERROR, minAllowedVersion, toolVersion), null);
     }
   }
 
